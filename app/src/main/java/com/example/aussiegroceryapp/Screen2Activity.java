@@ -5,9 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.button.MaterialButton;
-import android.widget.Button;
-import com.example.aussiegroceryapp.R;
-
 
 public class Screen2Activity extends AppCompatActivity {
 
@@ -23,5 +20,14 @@ public class Screen2Activity extends AppCompatActivity {
         loginButton = findViewById(R.id.login_button);
         registerButton = findViewById(R.id.register_button);
 
+        loginButton.setOnClickListener(view -> {
+            Intent intent = new Intent(Screen2Activity.this, LoginActivity.class);
+            startActivity(intent);
+        });
+
+        registerButton.setOnClickListener(view -> {
+            Intent intent = new Intent(Screen2Activity.this, RegistrationActivity.class);
+            startActivity(intent);
+        });
     }
 }
