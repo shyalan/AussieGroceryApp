@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "321159560916",
+    "project_id": "aussie-grocery-app",
+    "storage_bucket": "aussie-grocery-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:321159560916:android:fb2282dec9b2c0c5cd8541",
+        "android_client_info": {
+          "package_name": "com.example.aussiegroceryapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "321159560916-eg3f3bejngqd62es74jq3ij04gpgf7d8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA965yRRunoZTo1_QS1LQ2SEFXRAbBOn1A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "321159560916-eg3f3bejngqd62es74jq3ij04gpgf7d8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
