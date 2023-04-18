@@ -64,8 +64,8 @@ public class HomeActivity extends AppCompatActivity {
                 // Sign out user
                 FirebaseAuth.getInstance().signOut();
 
-                // Return to main activity
-                Intent intent = new Intent(HomeActivity.this, MainActivity.class);
+                // Return to screen2 activity
+                Intent intent = new Intent(HomeActivity.this, Screen2Activity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // clear all activities on top of main activity
                 startActivity(intent);
                 finish(); // close current activity

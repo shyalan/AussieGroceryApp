@@ -83,7 +83,7 @@ public class RegistrationActivity extends AppCompatActivity {
                                 // Sign in success, update UI with the signed-in user's information
                                 FirebaseUser user = mAuth.getCurrentUser();
                                 Toast.makeText(RegistrationActivity.this, "Registration successful", Toast.LENGTH_SHORT).show();
-                                // Move user to MainActivity
+                                // Move user to Scree2Activity
                                 Intent intent = new Intent(RegistrationActivity.this, Screen2Activity.class);
                                 startActivity(intent);
                                 finish();
