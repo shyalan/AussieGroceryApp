@@ -1,3 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Aussie Grocery App</string>
+    <string name="list_name_hint">Enter list name</string>
+    <string name="product_prompt">Select a product</string>
+    <string name="add_product_button_text">Add Product</string>
+    <string name="finish_button_text">Finish</string>
+    <string name="app_name">Aussie Grocery</string>
+    <string name="welcome_message">Welcome to My App!</string>
+    <string name="button_label">Click me!</string>
+    <string name="menu_item">Settings</string>
+    <string-array name="product_array">
+        <item>Product 1</item>
+        <item>Product 2</item>
+        <item>Product 3</item>
+        <item>Product 4</item>
+    </string-array>
+    <string name="create_list_title">Create New List</string>
+    <string name="list_name_label">List Name:</string>
+    <string name="select_products_label">Select Products:</string>
+
+
 </resources>

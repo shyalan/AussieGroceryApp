@@ -33,7 +33,8 @@ public class HomeActivity extends AppCompatActivity {
         createListButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Code to be executed when create list button is clicked
+                Intent intent = new Intent(HomeActivity.this, CreatedListActivity.class);
+                startActivity(intent);
             }
         });
 

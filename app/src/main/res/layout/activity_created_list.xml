@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@drawable/background_gradient"
+    android:gravity="center">
+
+    <!-- App logo -->
+
+    <!-- Welcome text -->
+
+    <ImageView
+        android:id="@+id/logo_image_view"
+        android:layout_width="181dp"
+        android:layout_height="197dp"
+        android:src="@drawable/logo" />
+
+    <TextView
+        android:id="@+id/welcome_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Create List"
+        android:textColor="@color/purple_700"
+        android:textSize="24sp"
+        android:layout_below="@id/logo_image_view"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="0dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/list_name_label" />
+
+    <EditText
+        android:id="@+id/list_name_edit_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="text"
+        android:hint="@string/list_name_hint" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="35dp"
+        android:text="@string/select_products_label" />
+
+    <Spinner
+        android:id="@+id/product_spinner"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:background="@drawable/spinner_outline"
+        android:foreground="?attr/selectableItemBackgroundBorderless"
+        android:prompt="@string/product_prompt" />
+
+    <Button
+        android:id="@+id/add_product_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/add_product_button_text" />
+
+    <Button
+        android:id="@+id/finish_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/finish_button_text" />
+
+    <ListView
+        android:id="@+id/selected_products_listview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+</LinearLayout>
