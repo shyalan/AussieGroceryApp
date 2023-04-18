@@ -25,6 +25,18 @@
             android:name="Screen2Activity" >
         </activity>
 
+        <activity
+            android:name=".RegistrationActivity" >
+        </activity>
+
+        <activity
+            android:name=".LoginActivity" >
+        </activity>
+
+        <activity
+            android:name=".HomeActivity">
+        </activity>
+
     </application>
 
 </manifest>

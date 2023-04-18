@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background_gradient">
+
+    <!-- App logo -->
+    <ImageView
+        android:id="@+id/logo_image_view"
+        android:layout_width="181dp"
+        android:layout_height="197dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="0dp"
+        android:src="@drawable/logo" />
+
+    <!-- Welcome text -->
+    <TextView
+        android:id="@+id/welcome_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Welcome Back!"
+        android:textColor="@color/purple_700"
+        android:textSize="24sp"
+        android:layout_below="@id/logo_image_view"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="0dp" />
+
+    <!-- Create list button -->
+    <Button
+        android:id="@+id/create_list_button"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_below="@id/welcome_text_view"
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="40dp"
+        android:layout_marginTop="35dp"
+        android:background="@drawable/button_background"
+        android:text="Create List"
+        android:textColor="@color/white"
+        android:textSize="18sp" />
+
+    <!-- My list button -->
+    <Button
+        android:id="@+id/my_list_button"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_below="@id/welcome_text_view"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="35dp"
+        android:layout_marginRight="40dp"
+        android:background="@drawable/button_background"
+        android:text="My List"
+        android:textColor="@color/white"
+        android:textSize="18sp" />
+
+    <!-- Latest deals button -->
+    <Button
+        android:id="@+id/latest_deals_button"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:background="@drawable/button_background"
+        android:text="Latest Deals"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        android:layout_below="@id/create_list_button"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="40dp" />
+
+    <!-- Top store button -->
+    <Button
+        android:id="@+id/top_store_button"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:background="@drawable/button_background"
+        android:text="Top Store"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        android:layout_below="@id/my_list_button"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="40dp" />
+
+    <!-- Logout button -->
+    <Button
+        android:id="@+id/logout_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="610dp"
+        android:background="@color/purple_700"
+        android:text="Logout"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+</RelativeLayout>

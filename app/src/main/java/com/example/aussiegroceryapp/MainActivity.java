@@ -1,6 +1,7 @@
 package com.example.aussiegroceryapp;
 
 import androidx.appcompat.app.AppCompatActivity;
+import com.google.firebase.FirebaseApp;
 
 import android.os.Bundle;
 import android.view.View;
@@ -12,6 +13,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        FirebaseApp.initializeApp(this);
         setContentView(R.layout.activity_main);
 
         Button startButton = findViewById(R.id.start_button);
