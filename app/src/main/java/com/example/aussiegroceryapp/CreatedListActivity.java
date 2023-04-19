@@ -9,6 +9,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -16,8 +17,11 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class CreatedListActivity extends AppCompatActivity {
 
@@ -25,6 +29,9 @@ public class CreatedListActivity extends AppCompatActivity {
     private Spinner productSpinner;
     private ListView selectedProductsListView;
     private ArrayAdapter<String> selectedProductsAdapter;
+
+    // Firestore instance variable
+    private FirebaseFirestore firestore;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +50,10 @@ public class CreatedListActivity extends AppCompatActivity {
         productAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         productSpinner.setAdapter(productAdapter);
 
+        // Firestore initialization
+        firestore = FirebaseFirestore.getInstance();
+
+        // Firebase listener to populate spinner
         FirebaseDatabase.getInstance().getReference("products").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -76,7 +87,25 @@ public class CreatedListActivity extends AppCompatActivity {
         finishButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // selected products
+                String listName = listNameEditText.getText().toString();
+                if (listName.isEmpty()) {
+                    Toast.makeText(CreatedListActivity.this, "Please enter a list name", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                Map<String, Object> list = new HashMap<>();
+                list.put("name", listName);
+                list.put("products", selectedProductsAdapter.getCount() > 0 ? selectedProductsAdapter.getItem(0) : "");
+                for (int i = 1; i < selectedProductsAdapter.getCount(); i++) {
+                    list.put("product" + i, selectedProductsAdapter.getItem(i));
+                }
+                firestore.collection("lists").add(list)
+                        .addOnSuccessListener(documentReference -> {
+                            Toast.makeText(CreatedListActivity.this, "List created successfully", Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(CreatedListActivity.this, HomeActivity.class);
+                            startActivity(intent);
+                            finish();
+                        })
+                        .addOnFailureListener(e -> Toast.makeText(CreatedListActivity.this, "Error creating list", Toast.LENGTH_SHORT).show());
             }
         });
 
