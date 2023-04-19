@@ -1,5 +1,6 @@
 package com.example.aussiegroceryapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -10,6 +11,11 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
@@ -25,17 +31,35 @@ public class CreatedListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_created_list);
 
-        // Get references to UI elements
+        // UI Elements
         listNameEditText = findViewById(R.id.list_name_edit_text);
         productSpinner = findViewById(R.id.product_spinner);
         selectedProductsListView = findViewById(R.id.selected_products_listview);
         selectedProductsAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, new ArrayList<String>());
         selectedProductsListView.setAdapter(selectedProductsAdapter);
 
-        // Set up spinner
-        ArrayAdapter<CharSequence> productAdapter = ArrayAdapter.createFromResource(this, R.array.product_array, android.R.layout.simple_spinner_item);
+        // Spinner
+        final ArrayAdapter<String> productAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, new ArrayList<String>());
         productAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         productSpinner.setAdapter(productAdapter);
+
+        FirebaseDatabase.getInstance().getReference("products").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot productSnapshot : dataSnapshot.getChildren()) {
+                    String productName = productSnapshot.child("name").getValue(String.class);
+                    String productPrice = productSnapshot.child("price").getValue(String.class);
+                    String productText = productName + " - $" + productPrice;
+                    productAdapter.add(productText);
+                }
+                productAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Handle database error
+            }
+        });
 
         // Set up buttons
         Button addProductButton = findViewById(R.id.add_product_button);
@@ -52,7 +76,17 @@ public class CreatedListActivity extends AppCompatActivity {
         finishButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Do something with selected products
+                // selected products
+            }
+        });
+
+        //Button to return to the Home Screen
+        Button homeButton = findViewById(R.id.home_button);
+        homeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(CreatedListActivity.this, HomeActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -62,6 +96,5 @@ public class CreatedListActivity extends AppCompatActivity {
 
         TextView listNameLabelTextView = findViewById(R.id.list_name_edit_text);
         listNameLabelTextView.setText(R.string.list_name_label);
-
     }
 }

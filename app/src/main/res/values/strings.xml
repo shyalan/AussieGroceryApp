@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="list_name_hint">Enter list name</string>
+    <string name="list_name_hint">Enter list name: </string>
     <string name="product_prompt">Select a product</string>
     <string name="add_product_button_text">Add Product</string>
     <string name="finish_button_text">Finish</string>

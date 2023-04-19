@@ -1,0 +1,24 @@
+{
+  "products": {
+    "product1": {
+      "name": "Apple",
+      "price": "5"
+    },
+    "product2": {
+      "name": "Orange",
+      "price": "3"
+    },
+    "product3": {
+      "name": "Milk",
+      "price": "2"
+    },
+    "product4": {
+      "name": "Banana",
+      "price": "4.5"
+    },
+    "product5": {
+      "name": "Peach",
+      "price": "1.2"
+    }
+  }
+}

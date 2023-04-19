@@ -41,7 +41,8 @@ public class HomeActivity extends AppCompatActivity {
         myListButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Code to be executed when my list button is clicked
+                Intent intent = new Intent(HomeActivity.this, MyListActivity.class);
+                startActivity(intent);
             }
         });
 

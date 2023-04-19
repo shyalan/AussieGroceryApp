@@ -41,6 +41,10 @@
             android:name=".CreatedListActivity">
         </activity>
 
+        <activity
+            android:name=".MyListActivity">
+        </activity>
+
     </application>
 
 </manifest>
