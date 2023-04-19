@@ -19,6 +19,10 @@
     "product5": {
       "name": "Peach",
       "price": "1.2"
+    },
+    "product6": {
+      "name": "Mango",
+      "price": "2.5"
     }
   }
 }

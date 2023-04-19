@@ -30,5 +30,26 @@ public class MyListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mylist);
+
+        //Button to return to the Home Screen
+        Button homeButton = findViewById(R.id.home_button);
+        homeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MyListActivity.this, HomeActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        //Button to create list
+        Button createlistButton = findViewById(R.id.create_list_button);
+        createlistButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MyListActivity.this, CreatedListActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 }
+
