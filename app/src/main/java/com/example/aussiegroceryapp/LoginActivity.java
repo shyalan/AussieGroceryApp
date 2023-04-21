@@ -48,27 +48,27 @@ public class LoginActivity extends AppCompatActivity {
 
             // Validate input
             if (TextUtils.isEmpty(email)) {
-                emailEditText.setError("Email is required");
-                emailEditText.requestFocus();
-                return;
+                emailEditText.setError("Email is required"); // Display error message for empty email field
+                emailEditText.requestFocus(); // Set focus on email field
+                return; // Exit the function and do not proceed with authentication
             }
 
             if (TextUtils.isEmpty(password)) {
-                passwordEditText.setError("Password is required");
-                passwordEditText.requestFocus();
-                return;
+                passwordEditText.setError("Password is required"); // Display error message for empty password field
+                passwordEditText.requestFocus(); // Set focus on password field
+                return; // Exit the function and do not proceed with authentication
             }
 
             if (!isValidEmail(email)) {
-                emailEditText.setError("Invalid email");
-                emailEditText.requestFocus();
-                return;
+                emailEditText.setError("Invalid email"); // Display error message for invalid email format
+                emailEditText.requestFocus(); // Set focus on email field
+                return; // Exit the function and do not proceed with authentication
             }
 
             if (!isValidPassword(password)) {
-                passwordEditText.setError("Invalid password");
-                passwordEditText.requestFocus();
-                return;
+                passwordEditText.setError("Invalid password"); // Display error message for invalid password format
+                passwordEditText.requestFocus(); // Set focus on password field
+                return; // Exit the function and do not proceed with authentication
             }
 
             // Sign in with email and password
@@ -84,17 +84,19 @@ public class LoginActivity extends AppCompatActivity {
                             } else {
                                 // If sign in fails, display a message to the user.
                                 Toast.makeText(LoginActivity.this, "Authentication failed.",
-                                        Toast.LENGTH_SHORT).show();
+                                        Toast.LENGTH_SHORT).show(); // Display error message for authentication failure
                             }
                         }
                     });
         });
     }
 
+    // Validate email format
     private boolean isValidEmail(String email) {
         return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }
 
+    // Validate password length
     private boolean isValidPassword(String password) {
         return password.length() >= 6;
     }

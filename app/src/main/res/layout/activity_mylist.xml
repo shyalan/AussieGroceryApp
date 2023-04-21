@@ -34,27 +34,34 @@
         android:id="@+id/created_list_view"
         android:layout_width="match_parent"
         android:layout_height="345dp"
-        android:layout_marginTop="10dp" />
+        android:layout_marginTop="10dp"
+        android:longClickable="true" />
+
+    <Button
+        android:id="@+id/delete_list_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Delete All Item"/>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center">
+        android:gravity="center"
+        android:orientation="horizontal">
 
         <Button
             android:id="@+id/create_list_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/add_product_button_text"
-            android:layout_marginRight="16dp"/>
+            android:layout_marginRight="16dp"
+            android:text="Create New List" />
 
         <Button
             android:id="@+id/home_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="return home"
-            android:layout_marginLeft="16dp"/>
+            android:layout_marginLeft="16dp"
+            android:text="return home" />
 
     </LinearLayout>
 </LinearLayout>

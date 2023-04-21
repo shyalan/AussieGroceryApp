@@ -13,8 +13,11 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -52,6 +55,9 @@ public class CreatedListActivity extends AppCompatActivity {
 
         // Firestore initialization
         firestore = FirebaseFirestore.getInstance();
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+        FirebaseUser currentUser = auth.getCurrentUser();
+        String userEmail = currentUser.getEmail();
 
         // Firebase listener to populate spinner
         FirebaseDatabase.getInstance().getReference("products").addValueEventListener(new ValueEventListener() {
@@ -71,6 +77,7 @@ public class CreatedListActivity extends AppCompatActivity {
                 // Handle database error
             }
         });
+
 
         // Set up buttons
         Button addProductButton = findViewById(R.id.add_product_button);
@@ -92,12 +99,18 @@ public class CreatedListActivity extends AppCompatActivity {
                     Toast.makeText(CreatedListActivity.this, "Please enter a list name", Toast.LENGTH_SHORT).show();
                     return;
                 }
+                FirebaseAuth auth = FirebaseAuth.getInstance();
+                String userEmail = auth.getCurrentUser().getEmail();
+
                 Map<String, Object> list = new HashMap<>();
                 list.put("name", listName);
+                list.put("email", userEmail);
                 list.put("products", selectedProductsAdapter.getCount() > 0 ? selectedProductsAdapter.getItem(0) : "");
                 for (int i = 1; i < selectedProductsAdapter.getCount(); i++) {
                     list.put("product" + i, selectedProductsAdapter.getItem(i));
                 }
+
+                FirebaseFirestore firestore = FirebaseFirestore.getInstance();
                 firestore.collection("lists").add(list)
                         .addOnSuccessListener(documentReference -> {
                             Toast.makeText(CreatedListActivity.this, "List created successfully", Toast.LENGTH_SHORT).show();

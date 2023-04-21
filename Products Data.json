@@ -1,26 +1,26 @@
 {
   "products": {
-    "product1": {
+    "products": {
       "name": "Apple",
       "price": "5"
     },
-    "product2": {
+    "products": {
       "name": "Orange",
       "price": "3"
     },
-    "product3": {
+    "products": {
       "name": "Milk",
       "price": "2"
     },
-    "product4": {
+    "products": {
       "name": "Banana",
       "price": "4.5"
     },
-    "product5": {
+    "products": {
       "name": "Peach",
       "price": "1.2"
     },
-    "product6": {
+    "products": {
       "name": "Mango",
       "price": "2.5"
     }
