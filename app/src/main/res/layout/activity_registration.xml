@@ -9,7 +9,7 @@
         android:layout_width="145dp"
         android:layout_height="118dp"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="30dp"
         android:src="@drawable/logo" />
 
     <TextView
@@ -89,7 +89,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/confirm_password"
         android:layout_marginStart="40dp"
-        android:layout_marginTop="41dp"
+        android:layout_marginTop="35dp"
         android:layout_marginEnd="40dp"
         android:background="@drawable/button_background"
         android:text="Register"
@@ -106,13 +106,5 @@
         android:text="Already have an account? Login"
         android:textColor="#000"
         android:textSize="16sp" />
-
-    <ProgressBar
-        android:id="@+id/progress_bar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/confirm_password"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="16dp" />
 
 </RelativeLayout>

@@ -65,7 +65,7 @@ public class CreatedListActivity extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot productSnapshot : dataSnapshot.getChildren()) {
                     String productName = productSnapshot.child("name").getValue(String.class);
-                    String productPrice = productSnapshot.child("price").getValue(String.class);
+                    Double productPrice = productSnapshot.child("price").getValue(Double.class);
                     String productText = productName + " - $" + productPrice;
                     productAdapter.add(productText);
                 }
@@ -100,15 +100,21 @@ public class CreatedListActivity extends AppCompatActivity {
                     return;
                 }
                 FirebaseAuth auth = FirebaseAuth.getInstance();
-                String userEmail = auth.getCurrentUser().getEmail();
-
+                FirebaseUser currentUser = auth.getCurrentUser();
+                String userEmail = currentUser.getEmail();
                 Map<String, Object> list = new HashMap<>();
                 list.put("name", listName);
                 list.put("email", userEmail);
-                list.put("products", selectedProductsAdapter.getCount() > 0 ? selectedProductsAdapter.getItem(0) : "");
-                for (int i = 1; i < selectedProductsAdapter.getCount(); i++) {
-                    list.put("product" + i, selectedProductsAdapter.getItem(i));
+
+                // Adding selected products to the list
+                ArrayList<String> selectedProductsList = new ArrayList<>();
+                for (int i = 0; i < selectedProductsAdapter.getCount(); i++) {
+                    String product = selectedProductsAdapter.getItem(i);
+                    String[] productNameAndPrice = product.split(" - \\$");
+                    String productName = productNameAndPrice[0];
+                    selectedProductsList.add(productName);
                 }
+                list.put("products", selectedProductsList);
 
                 FirebaseFirestore firestore = FirebaseFirestore.getInstance();
                 firestore.collection("lists").add(list)
@@ -122,7 +128,7 @@ public class CreatedListActivity extends AppCompatActivity {
             }
         });
 
-        //Button to return to the Home Screen
+//Button to return to the Home Screen
         Button homeButton = findViewById(R.id.home_button);
         homeButton.setOnClickListener(new View.OnClickListener() {
             @Override

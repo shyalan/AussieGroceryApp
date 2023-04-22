@@ -45,6 +45,14 @@
             android:name=".MyListActivity">
         </activity>
 
+        <activity
+            android:name=".LatestDealsActivity">
+        </activity>
+
+        <activity
+            android:name=".ResetPasswordActivity">
+        </activity>
+
     </application>
 
 </manifest>

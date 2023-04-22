@@ -6,7 +6,6 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.google.firebase.FirebaseApp;
@@ -26,7 +25,6 @@ public class RegistrationActivity extends AppCompatActivity {
     private Button registerButton;
     private TextView loginTextView;
     FirebaseAuth mAuth;
-    ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,9 +40,11 @@ public class RegistrationActivity extends AppCompatActivity {
         confirmPasswordEditText = findViewById(R.id.confirm_password);
         registerButton = findViewById(R.id.register_button);
         loginTextView = findViewById(R.id.login_textview);
-        progressBar = findViewById(R.id.progress_bar);
         // Set click listener for register button
         registerButton.setOnClickListener(view -> {
+            // Disable the register button
+            registerButton.setEnabled(false);
+
             // Get user input
             String fullName = fullNameEditText.getText().toString().trim();
             String email = emailEditText.getText().toString().trim();
@@ -56,29 +56,35 @@ public class RegistrationActivity extends AppCompatActivity {
             if (TextUtils.isEmpty(fullName) || TextUtils.isEmpty(email) || TextUtils.isEmpty(address)
                     || TextUtils.isEmpty(password) || TextUtils.isEmpty(confirmPassword)) {
                 Toast.makeText(this, "Please fill in all fields", Toast.LENGTH_SHORT).show();
+                // Enable the register button
+                registerButton.setEnabled(true);
                 return;
             }
 
             // Check if the email is valid
             if (!isValidEmail(email)) {
                 Toast.makeText(this, "Please enter a valid email address", Toast.LENGTH_SHORT).show();
+                // Enable the register button
+                registerButton.setEnabled(true);
                 return;
             }
 
             // Check if the passwords match
             if (!password.equals(confirmPassword)) {
                 Toast.makeText(this, "Passwords do not match", Toast.LENGTH_SHORT).show();
+                // Enable the register button
+                registerButton.setEnabled(true);
                 return;
             }
-
-            // Display progress bar while registering user
-            progressBar.setVisibility(View.VISIBLE);
 
             // Register user with Firebase Authentication
             mAuth.createUserWithEmailAndPassword(email, password)
                     .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
+                            // Enable the register button
+                            registerButton.setEnabled(true);
+
                             if (task.isSuccessful()) {
                                 // Sign in success, update UI with the signed-in user's information
                                 FirebaseUser user = mAuth.getCurrentUser();
@@ -91,16 +97,8 @@ public class RegistrationActivity extends AppCompatActivity {
                                 // If registration fails, display a message to the user.
                                 Toast.makeText(RegistrationActivity.this, "Registration failed. " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                             }
-                            // Hide progress bar
-                            progressBar.setVisibility(View.GONE);
                         }
                     });
-        });
-
-        // Set click listener for login text view
-        loginTextView.setOnClickListener(view -> {
-            Intent intent = new Intent(RegistrationActivity.this, LoginActivity.class);
-            startActivity(intent);
         });
     }
 

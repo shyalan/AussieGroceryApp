@@ -3,6 +3,7 @@ package com.example.aussiegroceryapp;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -16,6 +17,8 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuthInvalidUserException;
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -36,6 +39,27 @@ public class LoginActivity extends AppCompatActivity {
         passwordEditText = findViewById(R.id.password);
         loginButton = findViewById(R.id.login_button);
         textView = findViewById(R.id.title_text);
+
+        // Reset Listner and Send
+        TextView resetText = findViewById(R.id.reset_text);
+        resetText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(LoginActivity.this, ResetPasswordActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        // Go back
+        TextView backText = findViewById(R.id.back_text);
+        backText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(LoginActivity.this, Screen2Activity.class);
+                startActivity(intent);
+            }
+        });
+
 
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
@@ -71,11 +95,20 @@ public class LoginActivity extends AppCompatActivity {
                 return; // Exit the function and do not proceed with authentication
             }
 
+            // Disable login button and change text
+            loginButton.setEnabled(false);
+            loginButton.setText("Logging in...");
+
             // Sign in with email and password
             mAuth.signInWithEmailAndPassword(email, password)
                     .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
+
+                            // Enable login button and change text back to the original text
+                            loginButton.setEnabled(true);
+                            loginButton.setText("LOGIN");
+
                             if (task.isSuccessful()) {
                                 // Sign in success, update UI with the signed-in user's information
                                 Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
@@ -83,8 +116,20 @@ public class LoginActivity extends AppCompatActivity {
                                 finish();
                             } else {
                                 // If sign in fails, display a message to the user.
-                                Toast.makeText(LoginActivity.this, "Authentication failed.",
-                                        Toast.LENGTH_SHORT).show(); // Display error message for authentication failure
+                                Exception exception = task.getException();
+                                if (exception instanceof FirebaseAuthInvalidUserException) {
+                                    // The user account does not exist or has been disabled
+                                    Toast.makeText(LoginActivity.this, "Invalid email or password",
+                                            Toast.LENGTH_SHORT).show();
+                                } else if (exception instanceof FirebaseAuthInvalidCredentialsException) {
+                                    // The password is invalid
+                                    Toast.makeText(LoginActivity.this, "Invalid email or password",
+                                            Toast.LENGTH_SHORT).show();
+                                } else {
+                                    // Other exceptions
+                                    Toast.makeText(LoginActivity.this, "Authentication failed",
+                                            Toast.LENGTH_SHORT).show();
+                                }
                             }
                         }
                     });
