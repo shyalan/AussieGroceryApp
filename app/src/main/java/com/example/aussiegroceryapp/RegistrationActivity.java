@@ -8,6 +8,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.FirebaseApp;
 
 import androidx.annotation.NonNull;
@@ -18,12 +21,51 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 public class RegistrationActivity extends AppCompatActivity {
 
     private EditText fullNameEditText, emailEditText, addressEditText, passwordEditText, confirmPasswordEditText;
     private Button registerButton;
     private TextView loginTextView;
+    public class User {
+        private String fullName;
+        private String email;
+        private String address;
+
+        public User() {}
+
+        public User(String fullName, String email, String address) {
+            this.fullName = fullName;
+            this.email = email;
+            this.address = address;
+        }
+
+        public String getFullName() {
+            return fullName;
+        }
+
+        public void setFullName(String fullName) {
+            this.fullName = fullName;
+        }
+
+        public String getEmail() {
+            return email;
+        }
+
+        public void setEmail(String email) {
+            this.email = email;
+        }
+
+        public String getAddress() {
+            return address;
+        }
+
+        public void setAddress(String address) {
+            this.address = address;
+        }
+    }
+
     FirebaseAuth mAuth;
 
     @Override
@@ -40,6 +82,7 @@ public class RegistrationActivity extends AppCompatActivity {
         confirmPasswordEditText = findViewById(R.id.confirm_password);
         registerButton = findViewById(R.id.register_button);
         loginTextView = findViewById(R.id.login_textview);
+
         // Set click listener for register button
         registerButton.setOnClickListener(view -> {
             // Disable the register button
@@ -88,17 +131,60 @@ public class RegistrationActivity extends AppCompatActivity {
                             if (task.isSuccessful()) {
                                 // Sign in success, update UI with the signed-in user's information
                                 FirebaseUser user = mAuth.getCurrentUser();
-                                Toast.makeText(RegistrationActivity.this, "Registration successful", Toast.LENGTH_SHORT).show();
-                                // Move user to Scree2Activity
-                                Intent intent = new Intent(RegistrationActivity.this, Screen2Activity.class);
-                                startActivity(intent);
-                                finish();
+                                String uid = user.getUid();
+
+                                // Create a new user object with the user's details
+                                User newUser = new User(fullName, email, address);
+
+                                // Add the new user object to the "users" collection in Firestore
+                                FirebaseFirestore db = FirebaseFirestore.getInstance();
+                                db.collection("users").document(uid).set(newUser)
+                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                            @Override
+                                            public void onSuccess(Void aVoid) {
+                                                // Send email verification
+                                                FirebaseUser user = mAuth.getCurrentUser();
+                                                if (user != null) {
+                                                    user.sendEmailVerification()
+                                                            .addOnCompleteListener(RegistrationActivity.this, new OnCompleteListener<Void>() {
+                                                                @Override
+                                                                public void onComplete(@NonNull Task<Void> task) {
+                                                                    if (task.isSuccessful()) {
+                                                                        Toast.makeText(RegistrationActivity.this, "Verification email sent", Toast.LENGTH_SHORT).show();
+                                                                    }
+                                                                }
+                                                            });
+                                                }
+
+                                                Toast.makeText(RegistrationActivity.this, "Registration successful", Toast.LENGTH_SHORT).show();
+                                                // Move user to Screen2Activity
+                                                Intent intent = new Intent(RegistrationActivity.this, Screen2Activity.class);
+                                                startActivity(intent);
+                                                finish();
+                                            }
+                                        })
+                                        .addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception e) {
+                                                // If registration fails, display a message to the user.
+                                                Toast.makeText(RegistrationActivity.this, "Registration failed. " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                            }
+                                        });
                             } else {
                                 // If registration fails, display a message to the user.
                                 Toast.makeText(RegistrationActivity.this, "Registration failed. " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                             }
                         }
                     });
+        });
+
+        // Set click listener for login textview
+        loginTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(RegistrationActivity.this, LoginActivity.class);
+                startActivity(intent);
+            }
         });
     }
 
@@ -112,4 +198,3 @@ public class RegistrationActivity extends AppCompatActivity {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 }
-

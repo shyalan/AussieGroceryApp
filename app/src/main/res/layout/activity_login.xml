@@ -7,18 +7,20 @@
     <!-- Logo -->
     <ImageView
         android:id="@+id/logo"
-        android:layout_width="169dp"
-        android:layout_height="189dp"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="60dp"
+        android:layout_width="250dp"
+        android:layout_height="250dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerInParent="true"
+        android:adjustViewBounds="true"
+        android:scaleType="fitCenter"
         android:src="@drawable/logo" />
 
     <!-- Login Form -->
 
     <RelativeLayout
+        android:id="@+id/navbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/navbar"
         android:layout_below="@+id/logo">
 
         <TextView
@@ -26,10 +28,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:text="Login"
             android:layout_marginTop="20dp"
+            android:text="Login"
             android:textColor="#214122"
-            android:textSize="25dp" />
+            android:textSize="25sp" />
 
         <TextView
             android:id="@+id/back_text"
@@ -43,7 +45,7 @@
             android:layout_toStartOf="@+id/login_text"
             android:text="←"
             android:textColor="#214122"
-            android:textSize="50dp" />
+            android:textSize="50sp" />
 
     </RelativeLayout>
 
@@ -56,8 +58,10 @@
         android:layout_marginTop="50dp"
         android:hint="Email"
         android:inputType="textEmailAddress"
-        android:textColor="#214122"
-        android:textSize="16sp" />
+        android:textColor="#000"
+        android:textSize="16sp"
+        android:textColorHint="#000"
+        android:backgroundTint="#000" />
 
     <EditText
         android:id="@+id/password"
@@ -68,30 +72,44 @@
         android:layout_marginTop="20dp"
         android:hint="Password"
         android:inputType="textPassword"
-        android:textColor="#214122"
-        android:textSize="16sp" />
+        android:textColor="#000"
+        android:textSize="16sp"
+        android:textColorHint="#000"
+        android:backgroundTint="#000" />
 
     <TextView
         android:id="@+id/reset_text"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="299dp"
+        android:layout_height="98dp"
         android:layout_below="@+id/password"
+        android:layout_alignStart="@id/password"
+        android:layout_alignEnd="@id/login_button"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
         android:layout_marginTop="35dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="139dp"
         android:gravity="center"
         android:text="Forgot Password? Click to Reset"
         android:textColor="#214122"
-        android:textSize="18dp" />
+        android:textSize="18sp" />
 
     <Button
         android:id="@+id/login_button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/password"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
         android:layout_marginStart="40dp"
-        android:layout_marginTop="98dp"
+        android:layout_marginTop="150dp"
         android:layout_marginEnd="40dp"
+        android:layout_marginBottom="48dp"
         android:background="@drawable/button_background"
+        android:minHeight="10dp"
         android:text="Login"
         android:textColor="#FFFFFF"
         android:textSize="16sp" />
+
 </RelativeLayout>
+

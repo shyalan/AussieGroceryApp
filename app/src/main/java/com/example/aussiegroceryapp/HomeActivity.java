@@ -49,7 +49,8 @@ public class HomeActivity extends AppCompatActivity {
         latestDealsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Code to be executed when latest deals button is clicked
+                Intent intent = new Intent(HomeActivity.this, LatestDealsActivity.class);
+                startActivity(intent);
             }
         });
 

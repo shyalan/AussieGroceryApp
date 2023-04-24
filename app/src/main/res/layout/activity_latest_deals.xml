@@ -13,6 +13,7 @@
         android:id="@+id/logo_image_view"
         android:layout_width="181dp"
         android:layout_height="197dp"
+        android:layout_marginTop="-50dp"
         android:src="@drawable/logo" />
 
     <!-- Title text -->
@@ -27,12 +28,15 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="0dp" />
 
-    <!-- Deal list -->
-    <ListView
-        android:id="@+id/deals_list_view"
+    <!-- Product Recycler View -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/products_recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="337dp"
-        android:layout_marginTop="16dp" />
+        android:layout_height="393dp"
+        android:layout_below="@id/welcome_text_view"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp"
+        android:padding="5dp" />
 
     <LinearLayout
         android:layout_width="match_parent"

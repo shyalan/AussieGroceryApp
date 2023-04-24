@@ -36,7 +36,7 @@
         android:layout_marginTop="35dp"
         android:background="@drawable/button_background"
         android:text="Create List"
-        android:textColor="@color/white"
+        android:textColor="#fff"
         android:textSize="18sp" />
 
     <!-- My list button -->
@@ -50,7 +50,7 @@
         android:layout_marginRight="40dp"
         android:background="@drawable/button_background"
         android:text="My List"
-        android:textColor="@color/white"
+        android:textColor="#fff"
         android:textSize="18sp" />
 
     <!-- Latest deals button -->
@@ -60,7 +60,7 @@
         android:layout_height="150dp"
         android:background="@drawable/button_background"
         android:text="Latest Deals"
-        android:textColor="@color/white"
+        android:textColor="#fff"
         android:textSize="18sp"
         android:layout_below="@id/create_list_button"
         android:layout_alignParentStart="true"
@@ -74,7 +74,7 @@
         android:layout_height="150dp"
         android:background="@drawable/button_background"
         android:text="Top Store"
-        android:textColor="@color/white"
+        android:textColor="#fff"
         android:textSize="18sp"
         android:layout_below="@id/my_list_button"
         android:layout_alignParentEnd="true"
@@ -86,10 +86,12 @@
         android:id="@+id/logout_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
         android:layout_marginTop="610dp"
+        android:layout_marginBottom="10dp"
         android:background="@color/purple_700"
         android:text="Logout"
-        android:textColor="@color/white"
+        android:textColor="#fff"
         android:textSize="18sp"
         android:textStyle="bold" />
 
