@@ -28,12 +28,24 @@
         android:textSize="22sp" />
 
     <Button
-        android:id="@+id/login_button"
+        android:id="@+id/google_login_button"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_below="@+id/title_text"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="90dp"
+        android:background="@drawable/button_background"
+        android:text="Log in with Google"
+        android:textColor="#FFFFFF"
+        android:textSize="16sp" />
+
+    <Button
+        android:id="@+id/login_button"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/google_login_button"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="40dp"
         android:background="@drawable/button_background"
         android:text="Login"
         android:textColor="#FFFFFF"

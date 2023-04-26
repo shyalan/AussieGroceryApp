@@ -33,7 +33,6 @@ public class LatestDealsActivity extends AppCompatActivity {
 
         // Set click listeners for buttons
         addProductButton.setOnClickListener(v -> {
-            // TODO: Implement add product button click
         });
 
         homeButton.setOnClickListener(new View.OnClickListener(){

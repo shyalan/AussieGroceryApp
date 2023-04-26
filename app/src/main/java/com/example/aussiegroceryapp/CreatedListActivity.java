@@ -52,7 +52,6 @@ public class CreatedListActivity extends AppCompatActivity {
         }
     }
 
-
     private Map<String, Integer> selectedProductsMap;
     private ArrayAdapter<Product> selectedProductsAdapter;
 
@@ -130,8 +129,6 @@ public class CreatedListActivity extends AppCompatActivity {
             }
         });
 
-
-
         Button finishButton = findViewById(R.id.finish_button);
         finishButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -172,9 +169,6 @@ public class CreatedListActivity extends AppCompatActivity {
 
                 // Add the formatted total price to the list document
                 list.put("total_price", formattedTotalPrice);
-
-
-
 
                 DocumentReference docRef = firestore.collection("lists").document();
                 docRef.set(list)

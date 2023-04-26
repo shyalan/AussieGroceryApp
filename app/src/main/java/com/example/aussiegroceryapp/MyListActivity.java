@@ -7,8 +7,6 @@ import android.os.Bundle;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.StyleSpan;
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
@@ -131,10 +129,25 @@ public class MyListActivity extends AppCompatActivity {
                 // Parse the name of the selected list
                 String listName = selectedList.toString().split("\n")[0];
 
-                // Open the SelectedListActivity for the selected list
-                Intent intent = new Intent(MyListActivity.this, CreatedListActivity.class);
-                intent.putExtra("listName", listName);
-                startActivity(intent);
+                // Show confirmation dialog
+                AlertDialog.Builder builder = new AlertDialog.Builder(MyListActivity.this);
+                builder.setMessage("Are you sure you want to delete this list?")
+                        .setPositiveButton("Yes", (dialog, which) -> {
+                            // Delete the list from the database and ListView
+                            if (querySnapshot != null && !querySnapshot.isEmpty()) {
+                                for (DocumentSnapshot document : querySnapshot.getDocuments()) {
+                                    Map<String, Object> data = document.getData();
+                                    if (data != null && data.get("name").toString().equals(listName)) {
+                                        document.getReference().delete();
+                                        createdListAdapter.remove(selectedList);
+                                        Toast.makeText(MyListActivity.this, "List deleted successfully!", Toast.LENGTH_SHORT).show();
+                                        break;
+                                    }
+                                }
+                            }
+                        })
+                        .setNegativeButton("No", (dialog, which) -> dialog.dismiss())
+                        .show();
             });
         }
     }

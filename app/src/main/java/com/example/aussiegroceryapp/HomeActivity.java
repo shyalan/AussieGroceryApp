@@ -16,6 +16,7 @@ public class HomeActivity extends AppCompatActivity {
     private Button latestDealsButton;
     private Button topStoreButton;
     private Button logoutButton;
+    private Button accountButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,6 +24,7 @@ public class HomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home);
 
         // Initialize buttons
+        accountButton = findViewById(R.id.account_button);
         createListButton = findViewById(R.id.create_list_button);
         myListButton = findViewById(R.id.my_list_button);
         latestDealsButton = findViewById(R.id.latest_deals_button);
@@ -30,6 +32,15 @@ public class HomeActivity extends AppCompatActivity {
         logoutButton = findViewById(R.id.logout_button);
 
         // Set onClickListeners for buttons
+
+        accountButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(HomeActivity.this, AccountActivity.class);
+                startActivity(intent);
+            }
+        });
+
         createListButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -57,7 +68,8 @@ public class HomeActivity extends AppCompatActivity {
         topStoreButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Code to be executed when top store button is clicked
+                Intent intent = new Intent(HomeActivity.this, TopStoreActivity.class);
+                startActivity(intent);
             }
         });
 

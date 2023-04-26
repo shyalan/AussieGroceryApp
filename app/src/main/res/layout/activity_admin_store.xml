@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@drawable/background_gradient"
+    android:gravity="center">
+
+    <!-- App logo -->
+    <ImageView
+        android:id="@+id/logo_image_view"
+        android:layout_width="181dp"
+        android:layout_height="197dp"
+        android:src="@drawable/logo" />
+
+    <TextView
+        android:id="@+id/welcome_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="NEW STORE"
+        android:textColor="@color/purple_700"
+        android:textSize="24sp"
+        android:layout_below="@id/logo_image_view"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="0dp" />
+
+    <EditText
+        android:id="@+id/store_name_edit_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textPostalAddress"
+        android:textColor="#000"
+        android:textSize="16sp"
+        android:hint="Name of Store"
+        android:textColorHint="#000"
+        android:backgroundTint="#000"
+        android:layout_marginTop="20dp"/>
+
+    <TextView
+        android:id="@+id/store_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/logo_image_view"
+        android:layout_marginTop="20dp"
+        android:text="Address:"
+        android:textColor="@color/purple_700"
+        android:textSize="24sp" />
+
+    <EditText
+        android:id="@+id/longitude_edit_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textPostalAddress"
+        android:textColor="#000"
+        android:textSize="16sp"
+        android:hint="Longitude: "
+        android:textColorHint="#000"
+        android:backgroundTint="#000"
+        android:layout_marginTop="20dp"/>
+
+    <EditText
+        android:id="@+id/latitude_edit_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textPostalAddress"
+        android:textColor="#000"
+        android:textSize="16sp"
+        android:hint="Latitude: "
+        android:textColorHint="#000"
+        android:backgroundTint="#000"
+        android:layout_marginTop="20dp"/>
+
+    <!-- New Store Button -->
+    <Button
+        android:id="@+id/store_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Add New Store"
+        android:textColor="#FFFFFF" />
+
+
+    <!-- Back Button -->
+    <Button
+        android:id="@+id/back_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:text="Return to Admin Page"
+        android:textColor="#FFFFFF" />
+
+</LinearLayout>

@@ -9,9 +9,6 @@
     android:gravity="center">
 
     <!-- App logo -->
-
-    <!-- Title text -->
-
     <ImageView
         android:id="@+id/logo_image_view"
         android:layout_width="181dp"
@@ -22,7 +19,7 @@
         android:id="@+id/welcome_text_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Create List"
+        android:text="ADD A PRODUCT"
         android:textColor="@color/purple_700"
         android:textSize="24sp"
         android:layout_below="@id/logo_image_view"
@@ -30,15 +27,38 @@
         android:layout_marginTop="0dp" />
 
     <EditText
-        android:id="@+id/list_name_edit_text"
+        android:id="@+id/product_name_edit_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="textPostalAddress"
         android:textColor="#000"
         android:textSize="16sp"
-        android:hint="Enter list name: "
+        android:hint="Name "
         android:textColorHint="#000"
-        android:backgroundTint="#000" />
+        android:backgroundTint="#000"
+        android:layout_marginTop="20dp"/>
+
+    <EditText
+        android:id="@+id/product_price_edit_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textPostalAddress"
+        android:textColor="#000"
+        android:textSize="16sp"
+        android:hint="Price "
+        android:textColorHint="#000"
+        android:backgroundTint="#000"
+        android:layout_marginTop="20dp"/>
+
+    <TextView
+        android:id="@+id/store_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/logo_image_view"
+        android:layout_marginTop="20dp"
+        android:text="Select A Store:"
+        android:textColor="@color/purple_700"
+        android:textSize="24sp" />
 
     <Spinner
         android:id="@+id/product_spinner"
@@ -46,51 +66,34 @@
         android:layout_height="45dp"
         android:background="@drawable/spinner_outline"
         android:foreground="?attr/selectableItemBackgroundBorderless"
-        android:prompt="@string/product_prompt"
-        android:backgroundTint="#957335"/>
+        android:backgroundTint="#957335"
+        android:layout_marginTop="20dp"/>
 
-    <LinearLayout
+    <!-- New Store Button -->
+    <Button
+        android:id="@+id/store_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center"
-        android:layout_below="@+id/product_spinner"
-        android:layout_marginTop="15dp">
-
-        <Button
-            android:id="@+id/add_product_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/add_product_button_text"
-            android:layout_marginRight="16dp"
-            android:textColor="#fff"/>
-
-        <Button
-            android:id="@+id/home_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="return home"
-            android:layout_marginLeft="16dp"
-            android:textColor="#fff"/>
-
-    </LinearLayout>
-
-    <ListView
-        android:id="@+id/selected_products_listview"
-        android:layout_width="match_parent"
-        android:layout_height="180dp"
-        android:layout_marginTop="10dp"
-        android:divider="#000"
-        android:dividerHeight="1dp"
-        android:background="@drawable/listview_background" />
+        android:layout_marginTop="16dp"
+        android:text="Add New Store"
+        android:textColor="#FFFFFF" />
 
     <!-- Finish Button -->
     <Button
         android:id="@+id/finish_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="0dp"
         android:text="Finish"
-        android:layout_marginTop="16dp"
-        android:textColor="#FFFFFF"/>
+        android:textColor="#FFFFFF" />
+
+    <!-- Back Button -->
+    <Button
+        android:id="@+id/back_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:text="Return to Admin Page"
+        android:textColor="#FFFFFF" />
 
 </LinearLayout>
