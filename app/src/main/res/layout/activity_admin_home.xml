@@ -53,10 +53,23 @@
         android:textStyle="bold" />
 
     <Button
+        android:id="@+id/top_product_button"
+        android:layout_width="391dp"
+        android:layout_below="@+id/stores_button"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/button_background"
+        android:text="Top Products"
+        android:layout_centerHorizontal="true"
+        android:textColor="#fff"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+    <Button
         android:id="@+id/user_button"
         android:layout_width="391dp"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/stores_button"
+        android:layout_below="@+id/top_product_button"
         android:layout_marginTop="20dp"
         android:background="@drawable/button_background"
         android:text="User Dashboard"

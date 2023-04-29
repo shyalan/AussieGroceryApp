@@ -65,13 +65,30 @@ public class MyListActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             querySnapshot = task.getResult();
                             if (querySnapshot != null && !querySnapshot.isEmpty()) {
+                                List<SpannableStringBuilder> listData = new ArrayList<>();
                                 for (DocumentSnapshot document : querySnapshot.getDocuments()) {
-                                    document.getReference().delete();
+                                    Map<String, Object> data = document.getData();
+                                    String listName = data.get("name") != null ? data.get("name").toString() : "";
+                                    SpannableStringBuilder sb = new SpannableStringBuilder(listName + "\n");
+                                    StyleSpan boldSpan = new StyleSpan(Typeface.BOLD);
+                                    sb.setSpan(boldSpan, 0, listName.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                                    double totalPrice = 0.0;
+                                    for (String key : data.keySet()) {
+                                        if (!key.equals("name") && !key.equals("email")) { // Don't show email
+                                            Object value = data.get(key);
+                                            if (value != null) {
+                                                String[] valueSplit = value.toString().split("-");
+                                                if (valueSplit.length == 3) {
+                                                    sb.append(String.format("%s - %s - %s\n", valueSplit[0].trim(), valueSplit[1].trim(), valueSplit[2].trim()));
+                                                    totalPrice += Double.parseDouble(valueSplit[2].trim()) * Double.parseDouble(valueSplit[1].trim());
+                                                }
+                                            }
+                                        }
+                                    }
+                                    sb.append(String.format("Total: $%.2f", totalPrice));
+                                    listData.add(sb);
                                 }
-                                Toast.makeText(MyListActivity.this, "Lists deleted successfully!", Toast.LENGTH_SHORT).show();
-                                createdListAdapter.clear();
-                            } else {
-                                Toast.makeText(MyListActivity.this, "No lists found!", Toast.LENGTH_SHORT).show();
+                                createdListAdapter.addAll(listData);
                             }
                         } else {
                             // Handle error

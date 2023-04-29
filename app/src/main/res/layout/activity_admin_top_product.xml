@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@drawable/background_gradient"
+    android:gravity="center">
+
+    <!-- App logo -->
+    <ImageView
+        android:id="@+id/logo_image_view"
+        android:layout_width="181dp"
+        android:layout_height="197dp"
+        android:src="@drawable/logo" />
+
+    <TextView
+        android:id="@+id/text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TOP PRODUCT EDITOR"
+        android:textColor="@color/purple_700"
+        android:textSize="24sp"
+        android:layout_below="@id/logo_image_view"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="0dp" />
+
+    <TextView
+        android:id="@+id/title2_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/logo_image_view"
+        android:layout_marginTop="20dp"
+        android:text="Select A Product:"
+        android:textColor="@color/purple_700"
+        android:textSize="24sp" />
+
+    <Spinner
+        android:id="@+id/product_spinner"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/spinner_outline"
+        android:backgroundTint="#957335"
+        android:foreground="?attr/selectableItemBackgroundBorderless" />
+
+    <!-- Add Product Button -->
+    <Button
+        android:id="@+id/product_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:text="New product?"
+        android:textColor="#FFFFFF" />
+
+    <!-- Finish Button -->
+    <Button
+        android:id="@+id/finish_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="0dp"
+        android:text="Finish"
+        android:textColor="#FFFFFF" />
+
+    <!-- Back Button -->
+    <Button
+        android:id="@+id/back_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:text="Return to Admin Page"
+        android:textColor="#FFFFFF" />
+
+</LinearLayout>
