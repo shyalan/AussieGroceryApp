@@ -94,6 +94,10 @@
             android:name=".StoreProductsActivity">
         </activity>
 
+        <activity
+            android:name=".ListDetailsActivity">
+        </activity>
+
 
     </application>
 

@@ -27,13 +27,14 @@
         android:textSize="24sp"
         android:layout_below="@id/logo_image_view"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="0dp" />
+        android:layout_marginTop="0dp"
+        android:textStyle="bold"/>
 
     <EditText
         android:id="@+id/list_name_edit_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="textPostalAddress"
+        android:inputType="text"
         android:textColor="#000"
         android:textSize="16sp"
         android:hint="Enter list name: "
@@ -83,6 +84,17 @@
         android:divider="#000"
         android:dividerHeight="1dp"
         android:background="@drawable/listview_background" />
+
+    <!-- Total text -->
+    <TextView
+        android:id="@+id/total_text_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="Total Price: $0"
+        android:textAlignment="center"
+        android:textColor="#000"
+        android:textSize="20dp" />
 
     <!-- Finish Button -->
     <Button

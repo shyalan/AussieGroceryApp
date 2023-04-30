@@ -1,8 +1,10 @@
 package com.example.aussiegroceryapp;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -12,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -25,6 +28,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class CreatedListActivity extends AppCompatActivity {
@@ -40,25 +44,43 @@ public class CreatedListActivity extends AppCompatActivity {
     public class Product {
         public String name;
         public int quantity;
+        public double price;
 
-        public Product(String name, int quantity) {
+        public Product(String name, int quantity, double price) {
             this.name = name;
             this.quantity = quantity;
+            this.price = price;
         }
 
         @Override
         public String toString() {
-            return name + " - Qty: " + quantity;
+            return name + (quantity > 0 ? " - Qty: " + quantity : "");
         }
     }
 
     private Map<String, Integer> selectedProductsMap;
     private ArrayAdapter<Product> selectedProductsAdapter;
+    private double totalPrice = 0;
 
+    // Update total price
+    private void updateTotalPrice() {
+        totalPrice = 0;
+        for (Map.Entry<String, Integer> entry : selectedProductsMap.entrySet()) {
+            String productText = entry.getKey();
+            int productQty = entry.getValue();
+            String[] selectedProductSplit = productText.split(" - \\$");
+            double productPrice = Double.parseDouble(selectedProductSplit[1].trim());
+            totalPrice += productPrice * productQty;
+        }
+        TextView totalPriceTextView = findViewById(R.id.total_text_view);
+        totalPriceTextView.setText(String.format("Total Price: $%.2f", totalPrice));
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_created_list);
+
+        totalPrice = 0;
 
         // UI Elements
         listNameEditText = findViewById(R.id.list_name_edit_text);
@@ -91,7 +113,7 @@ public class CreatedListActivity extends AppCompatActivity {
                             if (documentSnapshot.getLong("quantity") != null) {
                                 productQty = documentSnapshot.getLong("quantity").intValue();
                             }
-                            String productText = productName + " - $" + productPrice + " - Qty: " + productQty;
+                            String productText = productName + " - $" + productPrice;
                             productAdapter.add(productText);
                         }
                         productAdapter.notifyDataSetChanged();
@@ -104,89 +126,78 @@ public class CreatedListActivity extends AppCompatActivity {
                     }
                 });
 
-        // Set up buttons
-        Button addProductButton = findViewById(R.id.add_product_button);
-        addProductButton.setOnClickListener(new View.OnClickListener() {
+        //Button to add selected product to the list
+        Button addButton = findViewById(R.id.add_product_button);
+        addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String selectedProduct = (String) productSpinner.getSelectedItem();
-                String[] productNameAndPriceAndQty = selectedProduct.split(" - ");
-                String productName = productNameAndPriceAndQty[0];
-                int productQty = Integer.parseInt(productNameAndPriceAndQty[2].substring(5));
-                if (selectedProductsMap.containsKey(productName)) {
-                    // Increment the quantity if the product already exists
-                    selectedProductsMap.put(productName, selectedProductsMap.get(productName) + 1);
-                } else {
-                    // Add the product to the map with a quantity of 1 if it doesn't exist
-                    selectedProductsMap.put(productName, 1);
+                String selectedProductText = productSpinner.getSelectedItem().toString();
+                int selectedProductQty = 1;
+
+                // Check if the product is already in the list
+                if (selectedProductsMap.containsKey(selectedProductText)) {
+                    selectedProductQty = selectedProductsMap.get(selectedProductText) + 1;
                 }
-                // Clear the adapter and re-populate it with the contents of the map
+                selectedProductsMap.put(selectedProductText, selectedProductQty);
                 selectedProductsAdapter.clear();
-                for (String name : selectedProductsMap.keySet()) {
-                    selectedProductsAdapter.add(new Product(name, selectedProductsMap.get(name)));
+                for (Map.Entry<String, Integer> entry : selectedProductsMap.entrySet()) {
+                    String productText = entry.getKey();
+                    int productQty = entry.getValue();
+                    selectedProductsAdapter.add(new Product(productText, productQty, 0.0));
                 }
+
                 selectedProductsAdapter.notifyDataSetChanged();
+
+                updateTotalPrice();
+            }
+
+            // Update total price
+            private void updateTotalPrice() {
+                totalPrice = 0;
+                for (Map.Entry<String, Integer> entry : selectedProductsMap.entrySet()) {
+                    String productText = entry.getKey();
+                    int productQty = entry.getValue();
+                    String[] selectedProductSplit = productText.split(" - \\$");
+                    double productPrice = Double.parseDouble(selectedProductSplit[1].trim());
+                    totalPrice += productPrice * productQty;
+                }
+                TextView totalPriceTextView = findViewById(R.id.total_text_view);
+                totalPriceTextView.setText(String.format("Total Price: $%.2f", totalPrice));
             }
         });
 
-        Button finishButton = findViewById(R.id.finish_button);
-        finishButton.setOnClickListener(new View.OnClickListener() {
+        selectedProductsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onClick(View v) {
-                String listName = listNameEditText.getText().toString();
-                if (listName.isEmpty()) {
-                    Toast.makeText(CreatedListActivity.this, "Please enter a list name", Toast.LENGTH_SHORT).show();
-                    return;
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                // Get the selected product and remove it from the map
+                Product selectedProduct = selectedProductsAdapter.getItem(position);
+                selectedProductsMap.remove(selectedProduct.name);
+
+                // Update the adapter with the new data
+                selectedProductsAdapter.clear();
+                for (Map.Entry<String, Integer> entry : selectedProductsMap.entrySet()) {
+                    String productText = entry.getKey();
+                    int productQty = entry.getValue();
+                    selectedProductsAdapter.add(new Product(productText, productQty, 0.0));
                 }
-                FirebaseAuth auth = FirebaseAuth.getInstance();
-                FirebaseUser currentUser = auth.getCurrentUser();
-                String userEmail = currentUser.getEmail();
-                // Creating the list document
-                Map<String, Object> list = new HashMap<>();
-                list.put("name", listName);
-                list.put("email", userEmail);
+                selectedProductsAdapter.notifyDataSetChanged();
 
-                // Adding selected products to the list
-                ArrayList<Map<String, Object>> selectedProductsList = new ArrayList<>();
-                double totalPrice = 0; // new variable to keep track of total price
-                for (int i = 0; i < selectedProductsAdapter.getCount(); i++) {
-                    Product product = selectedProductsAdapter.getItem(i);
-                    Map<String, Object> selectedProduct = new HashMap<>();
-                    selectedProduct.put("name", product.name);
-                    selectedProduct.put("quantity", product.quantity);
-                    // Add the price to the selected product map
-                    String selectedProductText = productSpinner.getItemAtPosition(i).toString();
-                    String[] productNameAndPriceAndQty = selectedProductText.split(" - ");
-                    Double productPrice = Double.parseDouble(productNameAndPriceAndQty[1].substring(2)); // get the price from the spinner text
-                    selectedProduct.put("price", productPrice);
-                    selectedProductsList.add(selectedProduct);
-                    totalPrice += productPrice * product.quantity; // update the total price
+                // Update the total price
+                updateTotalPrice();
+            }
+
+            // Update total price
+            private void updateTotalPrice() {
+                totalPrice = 0;
+                for (Map.Entry<String, Integer> entry : selectedProductsMap.entrySet()) {
+                    String productText = entry.getKey();
+                    int productQty = entry.getValue();
+                    String[] selectedProductSplit = productText.split(" - \\$");
+                    double productPrice = Double.parseDouble(selectedProductSplit[1].trim());
+                    totalPrice += productPrice * productQty;
                 }
-                list.put("products", selectedProductsList);
-
-                // Format the total price to 2 decimal places
-                String formattedTotalPrice = String.format("%.2f", totalPrice);
-
-                // Add the formatted total price to the list document
-                list.put("total_price", formattedTotalPrice);
-
-                DocumentReference docRef = firestore.collection("lists").document();
-                docRef.set(list)
-                        .addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void unused) {
-                                Toast.makeText(CreatedListActivity.this, "List created successfully", Toast.LENGTH_SHORT).show();
-                                Intent intent = new Intent(CreatedListActivity.this, HomeActivity.class);
-                                startActivity(intent);
-                                finish();
-                            }
-                        })
-                        .addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                Toast.makeText(CreatedListActivity.this, "Error creating list", Toast.LENGTH_SHORT).show();
-                            }
-                        });
+                TextView totalPriceTextView = findViewById(R.id.total_text_view);
+                totalPriceTextView.setText(String.format("Total Price: $%.2f", totalPrice));
             }
         });
 
@@ -201,11 +212,79 @@ public class CreatedListActivity extends AppCompatActivity {
             }
         });
 
+        //Button to finish and save the list
+        Button finishButton = findViewById(R.id.finish_button);
+        finishButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String userEmail = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+                String listName = listNameEditText.getText().toString().trim();
+
+                // Check if the list name is empty
+                if (listName.isEmpty()) {
+                    Toast.makeText(CreatedListActivity.this, "Please enter a list name", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                // Create a list of products
+                ArrayList<HashMap<String, Object>> productsList = new ArrayList<>();
+                for (Map.Entry<String, Integer> entry : selectedProductsMap.entrySet()) {
+                    String productText = entry.getKey();
+                    int productQty = entry.getValue();
+                    String[] selectedProductSplit = productText.split(" - \\$");
+                    String productName = selectedProductSplit[0].trim();
+                    double productPrice = Double.parseDouble(selectedProductSplit[1].trim());
+                    HashMap<String, Object> productMap = new HashMap<>();
+                    productMap.put("name", productName);
+                    productMap.put("price", productPrice);
+                    productMap.put("quantity", productQty);
+                    productsList.add(productMap);
+                }
+
+                // Create a list document
+                Map<String, Object> list = new HashMap<>();
+                list.put("email", userEmail);
+                list.put("listName", listName);
+                list.put("totalPrice", totalPrice);
+                list.put("products", productsList);
+
+                // Add the list document to Firestore
+                FirebaseFirestore.getInstance().collection("lists")
+                        .add(list)
+                        .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                            @Override
+                            public void onSuccess(DocumentReference documentReference) {
+                                Toast.makeText(CreatedListActivity.this, "List saved successfully", Toast.LENGTH_SHORT).show();
+
+                                // Return to HomeActivity
+                                Intent intent = new Intent(CreatedListActivity.this, HomeActivity.class);
+                                startActivity(intent);
+                                finish();
+                            }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Toast.makeText(CreatedListActivity.this, "Error saving list: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        });
+            }
+        });
+
         // Set up text views
         TextView welcomeTextView = findViewById(R.id.welcome_text_view);
         welcomeTextView.setText(R.string.create_list_title);
+        listNameEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean hasFocus) {
+                if (hasFocus) {
+                    listNameEditText.setHint("");
+                } else {
+                    listNameEditText.setHint(R.string.list_name_label);
+                }
+            }
+        });
 
-        TextView listNameLabelTextView = findViewById(R.id.list_name_edit_text);
-        listNameLabelTextView.setText(R.string.list_name_label);
     }
+
 }

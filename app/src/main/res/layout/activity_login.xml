@@ -31,7 +31,8 @@
             android:layout_marginTop="20dp"
             android:text="Login"
             android:textColor="#214122"
-            android:textSize="25sp" />
+            android:textSize="25sp"
+            android:textStyle="bold"/>
 
         <TextView
             android:id="@+id/back_text"
