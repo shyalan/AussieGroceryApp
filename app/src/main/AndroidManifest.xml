@@ -98,6 +98,14 @@
             android:name=".ListDetailsActivity">
         </activity>
 
+        <activity
+            android:name=".AdminAllUsersActivity">
+        </activity>
+
+        <activity
+            android:name=".AdminUsersDetailsActivity">
+        </activity>
+
 
     </application>
 

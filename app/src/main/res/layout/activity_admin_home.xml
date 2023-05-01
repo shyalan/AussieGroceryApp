@@ -73,7 +73,20 @@
         android:layout_below="@+id/top_product_button"
         android:layout_marginTop="20dp"
         android:background="@drawable/button_background"
-        android:text="User Dashboard"
+        android:text="Main Dashboard"
+        android:layout_centerHorizontal="true"
+        android:textColor="#fff"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+    <Button
+        android:id="@+id/all_users_button"
+        android:layout_width="391dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/user_button"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/button_background"
+        android:text="Users"
         android:layout_centerHorizontal="true"
         android:textColor="#fff"
         android:textSize="18sp"

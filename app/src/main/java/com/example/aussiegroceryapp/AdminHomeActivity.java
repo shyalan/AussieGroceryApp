@@ -15,6 +15,8 @@ public class AdminHomeActivity extends AppCompatActivity {
     private Button storesButton;
     private Button logoutButton;
     private Button userButton;
+
+    private Button allUsersButton;
     private Button topButton;
 
     @Override
@@ -25,6 +27,7 @@ public class AdminHomeActivity extends AppCompatActivity {
         addProductsButton = findViewById(R.id.add_products_button);
         storesButton = findViewById(R.id.stores_button);
         userButton = findViewById(R.id.user_button);
+        allUsersButton = findViewById(R.id.all_users_button);
         topButton = findViewById(R.id.top_product_button);
         logoutButton = findViewById(R.id.logout_button);
 
@@ -56,6 +59,14 @@ public class AdminHomeActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(AdminHomeActivity.this,HomeActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        allUsersButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(AdminHomeActivity.this,AdminAllUsersActivity.class);
                 startActivity(intent);
             }
         });

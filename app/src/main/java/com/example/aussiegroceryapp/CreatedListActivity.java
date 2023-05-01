@@ -212,60 +212,86 @@ public class CreatedListActivity extends AppCompatActivity {
             }
         });
 
-        //Button to finish and save the list
+        //Button to finish creating the list
         Button finishButton = findViewById(R.id.finish_button);
         finishButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String userEmail = FirebaseAuth.getInstance().getCurrentUser().getEmail();
-                String listName = listNameEditText.getText().toString().trim();
+                // Disable button when loading
+                finishButton.setEnabled(false);
 
-                // Check if the list name is empty
+                String listName = listNameEditText.getText().toString().trim();
                 if (listName.isEmpty()) {
                     Toast.makeText(CreatedListActivity.this, "Please enter a list name", Toast.LENGTH_SHORT).show();
+                    // Enable button when done loading
+                    finishButton.setEnabled(true);
                     return;
                 }
 
-                // Create a list of products
-                ArrayList<HashMap<String, Object>> productsList = new ArrayList<>();
-                for (Map.Entry<String, Integer> entry : selectedProductsMap.entrySet()) {
-                    String productText = entry.getKey();
-                    int productQty = entry.getValue();
-                    String[] selectedProductSplit = productText.split(" - \\$");
-                    String productName = selectedProductSplit[0].trim();
-                    double productPrice = Double.parseDouble(selectedProductSplit[1].trim());
-                    HashMap<String, Object> productMap = new HashMap<>();
-                    productMap.put("name", productName);
-                    productMap.put("price", productPrice);
-                    productMap.put("quantity", productQty);
-                    productsList.add(productMap);
-                }
-
-                // Create a list document
-                Map<String, Object> list = new HashMap<>();
-                list.put("email", userEmail);
-                list.put("listName", listName);
-                list.put("totalPrice", totalPrice);
-                list.put("products", productsList);
-
-                // Add the list document to Firestore
-                FirebaseFirestore.getInstance().collection("lists")
-                        .add(list)
-                        .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                // Check if the list name already exists
+                firestore.collection("lists")
+                        .whereEqualTo("email", userEmail)
+                        .whereEqualTo("listName", listName)
+                        .get()
+                        .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                             @Override
-                            public void onSuccess(DocumentReference documentReference) {
-                                Toast.makeText(CreatedListActivity.this, "List saved successfully", Toast.LENGTH_SHORT).show();
+                            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                                if (queryDocumentSnapshots.isEmpty()) {
+                                    // List name does not exist, create a new list
+                                    List<Map<String, Object>> productsList = new ArrayList<>();
+                                    for (Map.Entry<String, Integer> entry : selectedProductsMap.entrySet()) {
+                                        String productText = entry.getKey();
+                                        int productQty = entry.getValue();
+                                        String[] selectedProductSplit = productText.split(" - \\$");
+                                        String productName = selectedProductSplit[0].trim();
+                                        double productPrice = Double.parseDouble(selectedProductSplit[1].trim());
+                                        Map<String, Object> productMap = new HashMap<>();
+                                        productMap.put("name", productName);
+                                        productMap.put("quantity", productQty);
+                                        productMap.put("price", productPrice);
+                                        productsList.add(productMap);
+                                    }
 
-                                // Return to HomeActivity
-                                Intent intent = new Intent(CreatedListActivity.this, HomeActivity.class);
-                                startActivity(intent);
-                                finish();
+                                    Map<String, Object> newList = new HashMap<>();
+                                    newList.put("email", userEmail);
+                                    newList.put("listName", listName);
+                                    newList.put("products", productsList);
+                                    newList.put("totalPrice", totalPrice);
+
+                                    firestore.collection("lists")
+                                            .add(newList)
+                                            .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                                                @Override
+                                                public void onSuccess(DocumentReference documentReference) {
+                                                    Toast.makeText(CreatedListActivity.this, "List created successfully", Toast.LENGTH_SHORT).show();
+                                                    Intent intent = new Intent(CreatedListActivity.this, MyListActivity.class);
+                                                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                                    startActivity(intent);
+                                                    finish();
+                                                }
+                                            })
+                                            .addOnFailureListener(new OnFailureListener() {
+                                                @Override
+                                                public void onFailure(@NonNull Exception e) {
+                                                    Toast.makeText(CreatedListActivity.this, "Error creating list", Toast.LENGTH_SHORT).show();
+                                                    // Enable button when done loading
+                                                    finishButton.setEnabled(true);
+                                                }
+                                            });
+                                } else {
+                                    // List name already exists
+                                    Toast.makeText(CreatedListActivity.this, "List name already exists", Toast.LENGTH_SHORT).show();
+                                    // Enable button when done loading
+                                    finishButton.setEnabled(true);
+                                }
                             }
                         })
                         .addOnFailureListener(new OnFailureListener() {
                             @Override
                             public void onFailure(@NonNull Exception e) {
-                                Toast.makeText(CreatedListActivity.this, "Error saving list: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(CreatedListActivity.this, "Error checking list name", Toast.LENGTH_SHORT).show();
+                                // Enable button when done loading
+                                finishButton.setEnabled(true);
                             }
                         });
             }

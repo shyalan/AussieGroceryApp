@@ -65,7 +65,6 @@ public class RegistrationActivity extends AppCompatActivity {
             this.address = address;
         }
     }
-
     FirebaseAuth mAuth;
 
     @Override
