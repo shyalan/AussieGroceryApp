@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -42,6 +43,9 @@ public class StoreProductsActivity extends AppCompatActivity {
         listView = findViewById(R.id.list_view);
         backButton = findViewById(R.id.back_button);
         homeButton = findViewById(R.id.home_button);
+
+        // Initialize Firebase Crashlytics
+        FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(true);
 
         // Set the title of the activity to the store name
         titleTextView.setText(storeName);

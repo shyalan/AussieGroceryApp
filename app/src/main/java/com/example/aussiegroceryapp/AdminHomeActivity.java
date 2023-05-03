@@ -8,6 +8,7 @@ import android.widget.Button;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 public class AdminHomeActivity extends AppCompatActivity {
 
@@ -30,6 +31,9 @@ public class AdminHomeActivity extends AppCompatActivity {
         allUsersButton = findViewById(R.id.all_users_button);
         topButton = findViewById(R.id.top_product_button);
         logoutButton = findViewById(R.id.logout_button);
+
+        // Initialize Firebase Crashlytics
+        FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(true);
 
         addProductsButton.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -15,6 +15,7 @@ import androidx.core.content.ContextCompat;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -43,6 +44,9 @@ public class TopStoreActivity extends AppCompatActivity {
         backButton = findViewById(R.id.back_button);
         listButton = findViewById(R.id.list_view_button);
         mapView = (MapView) findViewById(R.id.map_view);
+
+        // Initialize Firebase Crashlytics
+        FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(true);
 
         // Set click listener for back button
         backButton.setOnClickListener(new View.OnClickListener() {

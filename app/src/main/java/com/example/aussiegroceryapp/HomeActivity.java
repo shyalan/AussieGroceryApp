@@ -8,6 +8,7 @@ import android.widget.Button;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -31,8 +32,10 @@ public class HomeActivity extends AppCompatActivity {
         topStoreButton = findViewById(R.id.top_store_button);
         logoutButton = findViewById(R.id.logout_button);
 
-        // Set onClickListeners for buttons
+        // Initialize Firebase Crashlytics
+        FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(true);
 
+        // Set onClickListeners for buttons
         accountButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

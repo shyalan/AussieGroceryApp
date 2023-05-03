@@ -15,6 +15,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -37,6 +38,9 @@ public class AdminStoreActivity extends AppCompatActivity {
         // Initialize FirebaseApp
         FirebaseApp.initializeApp(this);
 
+        // Initialize Firebase Crashlytics
+        FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(true);
+
         // Find views by ID
         storeNameEditText = findViewById(R.id.store_name_edit_text);
         longitudeEditText = findViewById(R.id.longitude_edit_text);
@@ -50,14 +54,19 @@ public class AdminStoreActivity extends AppCompatActivity {
         storeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // Disable the button
+                storeButton.setEnabled(false);
+
                 // Get values from EditTexts
                 String storeName = storeNameEditText.getText().toString().trim();
-                String longitude = longitudeEditText.getText().toString().trim();
-                String latitude = latitudeEditText.getText().toString().trim();
+                Double longitude = Double.parseDouble(longitudeEditText.getText().toString().trim());
+                Double latitude = Double.parseDouble(latitudeEditText.getText().toString().trim());
 
                 // Validate input
-                if (storeName.isEmpty() || longitude.isEmpty() || latitude.isEmpty()) {
+                if (storeName.isEmpty() || longitude == null || latitude == null) {
                     Toast.makeText(AdminStoreActivity.this, "Please fill out all fields", Toast.LENGTH_SHORT).show();
+                    // Enable the button
+                    storeButton.setEnabled(true);
                 } else {
                     // Query the database for any existing stores with the same name, longitude, or latitude
                     db.collection("stores")
@@ -73,6 +82,8 @@ public class AdminStoreActivity extends AppCompatActivity {
                                         if (querySnapshot != null && !querySnapshot.isEmpty()) {
                                             // Show error message if there is an existing store with the same name, longitude, or latitude
                                             Toast.makeText(AdminStoreActivity.this, "A store with the same name, longitude, or latitude already exists", Toast.LENGTH_SHORT).show();
+                                            // Enable the button
+                                            storeButton.setEnabled(true);
                                         } else {
                                             // Create a new store object
                                             Map<String, Object> store = new HashMap<>();
@@ -92,6 +103,8 @@ public class AdminStoreActivity extends AppCompatActivity {
                                                             storeNameEditText.setText("");
                                                             longitudeEditText.setText("");
                                                             latitudeEditText.setText("");
+                                                            // Enable the button
+                                                            storeButton.setEnabled(true);
                                                         }
                                                     })
                                                     .addOnFailureListener(new OnFailureListener() {
@@ -99,12 +112,16 @@ public class AdminStoreActivity extends AppCompatActivity {
                                                         public void onFailure(@NonNull Exception e) {
                                                             // Show failure message
                                                             Toast.makeText(AdminStoreActivity.this, "Failed to add new store", Toast.LENGTH_SHORT).show();
+                                                            // Enable the button
+                                                            storeButton.setEnabled(true);
                                                         }
                                                     });
                                         }
                                     } else {
                                         // Show failure message
                                         Toast.makeText(AdminStoreActivity.this, "Failed to query database", Toast.LENGTH_SHORT).show();
+                                        // Enable the button
+                                        storeButton.setEnabled(true);
                                     }
                                 }
                             });

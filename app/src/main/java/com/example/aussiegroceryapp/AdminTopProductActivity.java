@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -25,14 +26,13 @@ import java.util.List;
 public class AdminTopProductActivity extends AppCompatActivity {
 
     private Spinner productSpinner;
-    private Button productButton, finishButton, backButton;
 
     private FirebaseFirestore db;
     private List<String> productNames;
 
-    public class TopProductItem {
-        private String name;
-        private Double price;
+    public static class TopProductItem {
+        private final String name;
+        private final Double price;
 
         public TopProductItem(String name, Double price) {
             this.name = name;
@@ -55,11 +55,14 @@ public class AdminTopProductActivity extends AppCompatActivity {
 
         // Find views by their IDs
         productSpinner = findViewById(R.id.product_spinner);
-        finishButton = findViewById(R.id.finish_button);
-        productButton = findViewById(R.id.product_button);
-        backButton = findViewById(R.id.back_button);
+        Button finishButton = findViewById(R.id.finish_button);
+        Button productButton = findViewById(R.id.product_button);
+        Button backButton = findViewById(R.id.back_button);
 
         db = FirebaseFirestore.getInstance();
+
+        // Initialize Firebase Crashlytics
+        FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(true);
 
         // Set up the product spinner
         productNames = new ArrayList<>();

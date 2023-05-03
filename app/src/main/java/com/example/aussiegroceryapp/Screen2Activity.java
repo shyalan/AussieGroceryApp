@@ -10,6 +10,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 public class Screen2Activity extends AppCompatActivity {
 
@@ -27,6 +28,9 @@ public class Screen2Activity extends AppCompatActivity {
         loginButton = findViewById(R.id.login_button);
         registerButton = findViewById(R.id.register_button);
         googleLoginButton = findViewById(R.id.google_login_button);
+
+        // Initialize Firebase Crashlytics
+        FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(true);
 
         loginButton.setOnClickListener(view -> {
             Intent intent = new Intent(Screen2Activity.this, LoginActivity.class);

@@ -19,6 +19,7 @@ import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -26,10 +27,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 public class AccountActivity extends AppCompatActivity {
-    private Button emailButton;
-    private Button passwordButton;
-    private Button deleteButton;
-    private Button backButton;
     private String newEmail;
 
     @Override
@@ -37,10 +34,13 @@ public class AccountActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_account);
 
-        emailButton = findViewById(R.id.email_button);
-        passwordButton = findViewById(R.id.password);
-        deleteButton = findViewById(R.id.delete);
-        backButton = findViewById(R.id.back_button);
+        Button emailButton = findViewById(R.id.email_button);
+        Button passwordButton = findViewById(R.id.password);
+        Button deleteButton = findViewById(R.id.delete);
+        Button backButton = findViewById(R.id.back_button);
+
+        // Initialize Firebase Crashlytics
+        FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(true);
 
         emailButton.setOnClickListener(new View.OnClickListener() {
             @Override

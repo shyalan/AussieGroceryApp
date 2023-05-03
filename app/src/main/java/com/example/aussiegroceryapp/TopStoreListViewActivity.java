@@ -17,6 +17,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -39,6 +40,9 @@ public class TopStoreListViewActivity extends AppCompatActivity {
         listView = findViewById(R.id.list_view);
         backButton = findViewById(R.id.back_button);
         mapViewButton = findViewById(R.id.map_view_button);
+
+        // Initialize Firebase Crashlytics
+        FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(true);
 
         // Initialize the storeList ArrayList
         storeList = new ArrayList<>();

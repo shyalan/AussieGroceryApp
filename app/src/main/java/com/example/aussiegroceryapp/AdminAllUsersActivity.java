@@ -6,6 +6,7 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.ArrayAdapter;
 
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
@@ -17,19 +18,19 @@ import java.util.List;
 public class AdminAllUsersActivity extends AppCompatActivity {
 
     private ListView userListView;
-    private Button homeButton;
-    private FirebaseFirestore db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_all_users);
 
-        homeButton = findViewById(R.id.home_button);
+        Button homeButton = findViewById(R.id.home_button);
         userListView = findViewById(R.id.user_list_view);
+        // Initialize Firebase Crashlytics
+        FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(true);
 
         // Create a reference to the "users" collection
-        db = FirebaseFirestore.getInstance();
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("users")
                 .get()
                 .addOnCompleteListener(task -> {

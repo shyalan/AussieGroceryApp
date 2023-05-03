@@ -21,6 +21,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 public class RegistrationActivity extends AppCompatActivity {
@@ -82,6 +83,9 @@ public class RegistrationActivity extends AppCompatActivity {
         registerButton = findViewById(R.id.register_button);
         loginTextView = findViewById(R.id.login_textview);
 
+        // Initialize Firebase Crashlytics
+        FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(true);
+
         // Set click listener for register button
         registerButton.setOnClickListener(view -> {
             // Disable the register button
@@ -100,12 +104,30 @@ public class RegistrationActivity extends AppCompatActivity {
                 Toast.makeText(this, "Please fill in all fields", Toast.LENGTH_SHORT).show();
                 // Enable the register button
                 registerButton.setEnabled(true);
+
+                // Highlight the empty fields in red
+                if (TextUtils.isEmpty(fullName)) {
+                    fullNameEditText.setError("This field is required");
+                }
+                if (TextUtils.isEmpty(email)) {
+                    emailEditText.setError("This field is required");
+                }
+                if (TextUtils.isEmpty(address)) {
+                    addressEditText.setError("This field is required");
+                }
+                if (TextUtils.isEmpty(password)) {
+                    passwordEditText.setError("This field is required");
+                }
+                if (TextUtils.isEmpty(confirmPassword)) {
+                    confirmPasswordEditText.setError("This field is required");
+                }
                 return;
             }
 
             // Check if the email is valid
             if (!isValidEmail(email)) {
                 Toast.makeText(this, "Please enter a valid email address", Toast.LENGTH_SHORT).show();
+                emailEditText.setError("Please enter a valid email address");
                 // Enable the register button
                 registerButton.setEnabled(true);
                 return;
@@ -114,6 +136,8 @@ public class RegistrationActivity extends AppCompatActivity {
             // Check if the passwords match
             if (!password.equals(confirmPassword)) {
                 Toast.makeText(this, "Passwords do not match", Toast.LENGTH_SHORT).show();
+                passwordEditText.setError("Passwords do not match");
+                confirmPasswordEditText.setError("Passwords do not match");
                 // Enable the register button
                 registerButton.setEnabled(true);
                 return;

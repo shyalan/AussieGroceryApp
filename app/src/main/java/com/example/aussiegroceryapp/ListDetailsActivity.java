@@ -19,6 +19,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -38,6 +39,9 @@ public class ListDetailsActivity extends AppCompatActivity {
         String listName = getIntent().getStringExtra("listName");
         String email = getIntent().getStringExtra("email");
         Double totalPrice = getIntent().getDoubleExtra("totalPrice", 0.0);
+
+        // Initialize Firebase Crashlytics
+        FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(true);
 
         //Button to return to the Home Screen
         Button homeButton = findViewById(R.id.home_button);

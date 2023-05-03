@@ -16,6 +16,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.SignInMethodQueryResult;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import java.util.List;
 
@@ -34,6 +35,9 @@ public class ResetPasswordActivity extends AppCompatActivity {
 
         mEmailEditText = findViewById(R.id.email_edit);
         mConfirmEmailEditText = findViewById(R.id.confirm_email_edit);
+
+        // Initialize Firebase Crashlytics
+        FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(true);
 
         // Go back
         TextView backText = findViewById(R.id.back_text);

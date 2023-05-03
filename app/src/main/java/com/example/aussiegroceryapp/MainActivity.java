@@ -2,6 +2,7 @@ package com.example.aussiegroceryapp;
 
 import androidx.appcompat.app.AppCompatActivity;
 import com.google.firebase.FirebaseApp;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import android.os.Bundle;
 import android.view.View;
@@ -16,6 +17,10 @@ public class MainActivity extends AppCompatActivity {
         FirebaseApp.initializeApp(this);
         setContentView(R.layout.activity_main);
 
+        // Initialize Firebase Crashlytics
+        FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(true);
+
+        // Initialize the start button and set its click listener
         Button startButton = findViewById(R.id.start_button);
         startButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -25,5 +30,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        // This line will intentionally crash the app for testing purposes
+        //throw new RuntimeException("Test Crash");
     }
 }

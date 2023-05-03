@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -74,6 +75,9 @@ public class AdminProductsActivity extends AppCompatActivity {
         // Initialize Firestore instance
         db = FirebaseFirestore.getInstance();
 
+        // Initialize Firebase Crashlytics
+        FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(true);
+
         // Initialize UI elements
         mLogoImageView = findViewById(R.id.logo_image_view);
         mWelcomeTextView = findViewById(R.id.welcome_text_view);
@@ -117,63 +121,84 @@ public class AdminProductsActivity extends AppCompatActivity {
         mFinishButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // Disable the button
+                mFinishButton.setEnabled(false);
+
                 // Get the name and price entered by the user
-                String name = mProductNameEditText.getText().toString().trim();
-                double price = Double.parseDouble(mProductPriceEditText.getText().toString().trim());
-                String storeName = mProductSpinner.getSelectedItem().toString();
+                String ename = mProductNameEditText.getText().toString().trim();
+                String priceString = mProductPriceEditText.getText().toString().trim();
 
                 // Check if both fields are entered
-                if (!name.isEmpty() && !mProductPriceEditText.getText().toString().isEmpty()) {
-                    // Create a new product object
-                    Product product = new Product(name, price, storeName);
+                if (ename.isEmpty() || priceString.isEmpty()) {
+                    // Enable the button
+                    mFinishButton.setEnabled(true);
 
-                    // Add the product to the Firestore "products" collection
-                    // Query for documents in the "products" collection to check if the product already exists
-                    db.collection("products")
-                            .whereEqualTo("name", name)
-                            .get()
-                            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                @Override
-                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                    if (task.isSuccessful()) {
-                                        boolean productExists = false;
-                                        for (QueryDocumentSnapshot document : task.getResult()) {
-                                            // If a document with the same name exists, set productExists to true and break the loop
-                                            if (document.exists()) {
-                                                productExists = true;
-                                                break;
-                                            }
-                                        }
-
-                                        if (productExists) {
-                                            // Product with the same name already exists, show a toast message
-                                            Toast.makeText(AdminProductsActivity.this, "Product with the same name already exists", Toast.LENGTH_SHORT).show();
-                                        } else {
-                                            // Add the product to the Firestore "products" collection
-                                            db.collection("products")
-                                                    .add(product)
-                                                    .addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
-                                                        @Override
-                                                        public void onComplete(@NonNull Task<DocumentReference> task) {
-                                                            if (task.isSuccessful()) {
-                                                                // Product added successfully, show a toast message
-                                                                Toast.makeText(AdminProductsActivity.this, "Product added successfully!", Toast.LENGTH_SHORT).show();
-                                                            } else {
-                                                                // Product failed to be added, show a toast message with the error
-                                                                Toast.makeText(AdminProductsActivity.this, "Error adding product: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                                                            }
-                                                        }
-                                                    });
-                                        }
-                                    } else {
-                                        // Error occurred while retrieving documents, show a toast message with the error
-                                        Toast.makeText(AdminProductsActivity.this, "Error retrieving products: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                                    }
-                                }
-                            });
+                    // Show an error message
+                    Toast.makeText(AdminProductsActivity.this, "Please enter both product name and price", Toast.LENGTH_SHORT).show();
                 } else {
-                    // One or both fields are empty, show a toast message
-                    Toast.makeText(AdminProductsActivity.this, "Please enter both name and price of the product", Toast.LENGTH_SHORT).show();
+                    // Get the name and price entered by the user
+                    String name = mProductNameEditText.getText().toString().trim();
+                    double price = Double.parseDouble(mProductPriceEditText.getText().toString().trim());
+                    String storeName = mProductSpinner.getSelectedItem().toString();
+
+                    // Check if both fields are entered
+                    if (!name.isEmpty() && !mProductPriceEditText.getText().toString().isEmpty()) {
+                        // Create a new product object
+                        Product product = new Product(name, price, storeName);
+
+                        // Add the product to the Firestore "products" collection
+                        // Query for documents in the "products" collection to check if the product already exists
+                        db.collection("products")
+                                .whereEqualTo("name", name)
+                                .get()
+                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                        if (task.isSuccessful()) {
+                                            boolean productExists = false;
+                                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                                // If a document with the same name exists, set productExists to true and break the loop
+                                                if (document.exists()) {
+                                                    productExists = true;
+                                                    break;
+                                                }
+                                            }
+
+                                            if (productExists) {
+                                                // Product with the same name already exists, show a toast message
+                                                Toast.makeText(AdminProductsActivity.this, "Product with the same name already exists", Toast.LENGTH_SHORT).show();
+                                                mFinishButton.setEnabled(true);
+                                            } else {
+                                                // Add the product to the Firestore "products" collection
+                                                db.collection("products")
+                                                        .add(product)
+                                                        .addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+                                                            @Override
+                                                            public void onComplete(@NonNull Task<DocumentReference> task) {
+                                                                if (task.isSuccessful()) {
+                                                                    // Product added successfully, show a toast message
+                                                                    Toast.makeText(AdminProductsActivity.this, "Product added successfully!", Toast.LENGTH_SHORT).show();
+                                                                    mFinishButton.setEnabled(true);
+                                                                } else {
+                                                                    // Product failed to be added, show a toast message with the error
+                                                                    Toast.makeText(AdminProductsActivity.this, "Error adding product: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                                                                    mFinishButton.setEnabled(true);
+                                                                }
+                                                            }
+                                                        });
+                                            }
+                                        } else {
+                                            // Error occurred while retrieving documents, show a toast message with the error
+                                            Toast.makeText(AdminProductsActivity.this, "Error retrieving products: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                                            mFinishButton.setEnabled(true);
+                                        }
+                                    }
+                                });
+                    } else {
+                        // One or both fields are empty, show a toast message
+                        Toast.makeText(AdminProductsActivity.this, "Please enter both name and price of the product", Toast.LENGTH_SHORT).show();
+                        mFinishButton.setEnabled(true);
+                    }
                 }
             }
         });
