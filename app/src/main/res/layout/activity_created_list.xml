@@ -67,10 +67,10 @@
             android:textColor="#fff"/>
 
         <Button
-            android:id="@+id/home_button"
+            android:id="@+id/chat_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="return home"
+            android:text="Need Help?"
             android:layout_marginLeft="16dp"
             android:textColor="#fff"/>
 
@@ -96,13 +96,30 @@
         android:textColor="#000"
         android:textSize="20dp" />
 
-    <!-- Finish Button -->
-    <Button
-        android:id="@+id/finish_button"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Finish"
-        android:layout_marginTop="16dp"
-        android:textColor="#FFFFFF"/>
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_below="@+id/total_text_view"
+        android:layout_marginTop="15dp">
+
+        <Button
+            android:id="@+id/home_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="return home"
+            android:layout_marginRight="16dp"
+            android:textColor="#fff"/>
+
+        <Button
+            android:id="@+id/finish_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Save List"
+            android:layout_marginLeft="16dp"
+            android:textColor="#fff"/>
+
+    </LinearLayout>
 
 </LinearLayout>

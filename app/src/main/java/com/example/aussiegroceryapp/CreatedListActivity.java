@@ -216,6 +216,17 @@ public class CreatedListActivity extends AppCompatActivity {
             }
         });
 
+        //Button to return to the Home Screen
+        Button chatButton = findViewById(R.id.chat_button);
+        chatButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(CreatedListActivity.this, AiChatActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+
         //Button to finish creating the list
         Button finishButton = findViewById(R.id.finish_button);
         finishButton.setOnClickListener(new View.OnClickListener() {
