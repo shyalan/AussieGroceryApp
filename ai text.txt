@@ -1,0 +1,12 @@
+
+Sure, here's some sample text that you could use for your Botpress chatbot:
+
+Hello there! I'm here to help you select the right products for your grocery list. Our database contains a wide variety of fruits and vegetables, so don't hesitate to ask me any questions you might have.
+
+For example, if you're looking to create a fruit basket for a gift, I can suggest some great options for you. How about adding some juicy pineapples, crispy apples, sweet cherries, and tropical mangoes to your basket?
+
+Or maybe you're not sure what fruits and vegetables are in season right now. No problem! Just ask me and I'll let you know what's fresh and available.
+
+If you're looking for specific products, just let me know what you're looking for and I'll do my best to help you find them. And if you're not sure what to put on your grocery list, just ask me for some suggestions based on your dietary preferences or any specific needs you might have.
+
+So go ahead and ask me anything - I'm here to help you make the most of your grocery shopping experience!
