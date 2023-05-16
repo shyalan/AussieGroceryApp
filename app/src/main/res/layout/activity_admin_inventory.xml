@@ -18,13 +18,13 @@
         android:id="@+id/title_text_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Select Your Local Store"
+        android:text="Inventory Available"
         android:textColor="@color/purple_700"
         android:textSize="24sp"
         android:layout_below="@id/logo_image_view"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="0dp"
-        android:textStyle="bold"/>
+        android:textStyle="bold" />
 
     <!-- List View -->
     <ListView
@@ -32,20 +32,24 @@
         android:layout_width="match_parent"
         android:layout_height="399dp"
         android:layout_below="@id/title_text_view"
-        android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginBottom="10dp"
         android:background="@drawable/listview_background"
         android:divider="#000"
         android:dividerHeight="1dp"
         android:longClickable="true" />
 
-    <include
-        android:id="@+id/navigation_bar"
-        layout="@layout/nav_bar_3"
-        android:layout_width="match_parent"
+    <!-- Buttons -->
+    <Button
+        android:id="@+id/back_button"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true" />
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/button_background"
+        android:text="Back"
+        android:textColor="#fff"
+        android:textSize="18sp"
+        android:textStyle="bold" />
 
 </RelativeLayout>

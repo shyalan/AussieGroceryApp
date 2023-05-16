@@ -1,7 +1,9 @@
 package com.example.aussiegroceryapp;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -12,12 +14,18 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.DocumentReference;
+
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -64,6 +72,10 @@ public class AdminProductsActivity extends AppCompatActivity {
         }
     }
 
+    private static final int PICK_IMAGE_REQUEST = 1;
+    private Uri mImageUri;
+    private Button mUploadButton;
+
     // Declare a Firestore instance
     private FirebaseFirestore db;
 
@@ -71,6 +83,32 @@ public class AdminProductsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_products);
+
+        mUploadButton = findViewById(R.id.upload_button);
+        mUploadButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openGallery();
+            }
+        });
+    }
+
+    private void openGallery() {
+        Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        startActivityForResult(galleryIntent, PICK_IMAGE_REQUEST);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
+            mImageUri = data.getData();
+            mUploadButton.setEnabled(false);
+            Toast.makeText(AdminProductsActivity.this, "Image upload successful", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(AdminProductsActivity.this, "Image upload failed", Toast.LENGTH_SHORT).show();
+        }
 
         // Initialize Firestore instance
         db = FirebaseFirestore.getInstance();
@@ -115,7 +153,6 @@ public class AdminProductsActivity extends AppCompatActivity {
                         }
                     }
                 });
-
 
         // Set OnClickListener for "Finish" button
         mFinishButton.setOnClickListener(new View.OnClickListener() {
@@ -200,6 +237,103 @@ public class AdminProductsActivity extends AppCompatActivity {
                         mFinishButton.setEnabled(true);
                     }
                 }
+
+                // Check if an image has been selected
+                if (mImageUri != null) {
+                    // Create a reference to the image in Firebase Storage
+                    StorageReference storageRef = FirebaseStorage.getInstance().getReference().child("product_images/" + ename + ".jpg");
+
+                    // Upload the image to Firebase Storage
+                    storageRef.putFile(mImageUri)
+                            .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                                @Override
+                                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                    // Get the download URL of the image
+                                    storageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                        @Override
+                                        public void onSuccess(Uri uri) {
+                                            // Create a new document in the "products" collection
+                                            Product product = new Product(ename, Double.parseDouble(priceString), mProductSpinner.getSelectedItem().toString());
+                                            db.collection("products")
+                                                    .add(product)
+                                                    .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                                                        @Override
+                                                        public void onSuccess(DocumentReference documentReference) {
+                                                            // Update the document with the download URL of the image
+                                                            documentReference.update("imageUrl", uri.toString())
+                                                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                                        @Override
+                                                                        public void onSuccess(Void aVoid) {
+                                                                            // Enable the button
+                                                                            mFinishButton.setEnabled(true);
+
+                                                                            // Show a success message
+                                                                            Toast.makeText(AdminProductsActivity.this, "Product added successfully", Toast.LENGTH_SHORT).show();
+                                                                        }
+                                                                    })
+                                                                    .addOnFailureListener(new OnFailureListener() {
+                                                                        @Override
+                                                                        public void onFailure(@NonNull Exception e) {
+                                                                            // Enable the button
+                                                                            mFinishButton.setEnabled(true);
+
+                                                                            // Show an error message
+                                                                            Toast.makeText(AdminProductsActivity.this, "Error updating product: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                                                        }
+                                                                    });
+                                                        }
+                                                    })
+                                                    .addOnFailureListener(new OnFailureListener() {
+                                                        @Override
+                                                        public void onFailure(@NonNull Exception e) {
+                                                            // Enable the button
+                                                            mFinishButton.setEnabled(true);
+
+                                                            // Show an error message
+                                                            Toast.makeText(AdminProductsActivity.this, "Error adding product: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                                        }
+                                                    });
+                                        }
+                                    });
+                                }
+                            })
+                            .addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    // Enable the button
+                                    mFinishButton.setEnabled(true);
+
+                                    // Show an error message
+                                    Toast.makeText(AdminProductsActivity.this, "Error uploading image: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                } else {
+                    // Create a new document in the "products" collection without an image
+                    Product product = new Product(ename, Double.parseDouble(priceString), mProductSpinner.getSelectedItem().toString());
+                    db.collection("products")
+                            .add(product)
+                            .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                                @Override
+                                public void onSuccess(DocumentReference documentReference) {
+                                    // Enable the button
+                                    mFinishButton.setEnabled(true);
+
+                                    // Show a success message
+                                    Toast.makeText(AdminProductsActivity.this, "Product added successfully", Toast.LENGTH_SHORT).show();
+                                }
+                            })
+                            .addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    // Enable the button
+                                    mFinishButton.setEnabled(true);
+
+                                    // Show an error message
+                                    Toast.makeText(AdminProductsActivity.this, "Error adding product: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                }
+
             }
         });
 

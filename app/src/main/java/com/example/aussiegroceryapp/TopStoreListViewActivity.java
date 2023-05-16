@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -27,9 +28,10 @@ import java.util.ArrayList;
 public class TopStoreListViewActivity extends AppCompatActivity {
 
     private ListView listView;
-    private Button backButton, mapViewButton;
     private ArrayList<String> storeList;
     private ArrayAdapter<String> adapter;
+    private LinearLayout homeLayout;
+    private LinearLayout mapLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,8 +40,8 @@ public class TopStoreListViewActivity extends AppCompatActivity {
 
         // Get references to UI elements
         listView = findViewById(R.id.list_view);
-        backButton = findViewById(R.id.back_button);
-        mapViewButton = findViewById(R.id.map_view_button);
+        homeLayout = findViewById(R.id.home_layout);
+        mapLayout = findViewById(R.id.map_layout);
 
         // Initialize Firebase Crashlytics
         FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(true);
@@ -83,7 +85,7 @@ public class TopStoreListViewActivity extends AppCompatActivity {
         });
 
         // Set up click listeners for the buttons
-        backButton.setOnClickListener(new View.OnClickListener() {
+        homeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(TopStoreListViewActivity.this, HomeActivity.class);
@@ -91,7 +93,7 @@ public class TopStoreListViewActivity extends AppCompatActivity {
             }
         });
 
-        mapViewButton.setOnClickListener(new View.OnClickListener() {
+        mapLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(TopStoreListViewActivity.this, TopStoreActivity.class);

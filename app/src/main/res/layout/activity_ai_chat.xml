@@ -1,24 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="16dp"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:background="@drawable/background_gradient"
-    android:gravity="center">
+    android:background="@drawable/background_gradient">
 
+    <!-- App logo -->
     <ImageView
         android:id="@+id/logo_image_view"
-        android:layout_width="140dp"
-        android:layout_height="159dp"
-        android:src="@drawable/logo" />
+        android:layout_width="138dp"
+        android:layout_height="118dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="0dp"
+        android:src="@drawable/logo_home" />
 
+    <!-- Welcome text -->
     <TextView
         android:id="@+id/welcome_text_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="CHAT WITH OUR AI"
+        android:text="Chat With Our AI"
         android:textColor="@color/purple_700"
         android:textSize="24sp"
         android:layout_below="@id/logo_image_view"
@@ -32,35 +32,18 @@
         android:id="@+id/chat_web_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@id/welcome_text_view"
+        android:layout_above="@id/navigation_bar"
+        android:layout_marginTop="10dp"
         android:background="@drawable/listview_background"
         android:layout_weight="1"
         android:scrollbars="none" />
-    <!-- Buttons to allow users to navigate the app -->
 
-    <LinearLayout
+    <include
+        android:id="@+id/navigation_bar"
+        layout="@layout/nav_bar_2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center"
-        android:layout_below="@+id/total_text_view"
-        android:layout_marginTop="15dp">
+        android:layout_alignParentBottom="true" />
 
-        <Button
-            android:id="@+id/home_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="return home"
-            android:layout_marginRight="16dp"
-            android:textColor="#fff"/>
-
-        <Button
-            android:id="@+id/create_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Create List"
-            android:layout_marginLeft="16dp"
-            android:textColor="#fff"/>
-
-    </LinearLayout>
-
-</LinearLayout>
+</RelativeLayout>

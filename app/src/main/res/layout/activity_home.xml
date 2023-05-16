@@ -7,11 +7,11 @@
     <!-- App logo -->
     <ImageView
         android:id="@+id/logo_image_view"
-        android:layout_width="181dp"
-        android:layout_height="197dp"
+        android:layout_width="138dp"
+        android:layout_height="118dp"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="0dp"
-        android:src="@drawable/logo" />
+        android:src="@drawable/logo_home" />
 
     <!-- Welcome text -->
     <TextView
@@ -26,88 +26,51 @@
         android:layout_marginTop="0dp"
         android:textStyle="bold"/>
 
-    <!-- Create list button -->
-    <Button
-        android:id="@+id/create_list_button"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
+    <TextView
+        android:id="@+id/top_products_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Latest Products"
+        android:textColor="@color/purple_700"
+        android:textSize="20sp"
         android:layout_below="@id/welcome_text_view"
-        android:layout_alignParentStart="true"
-        android:layout_marginLeft="40dp"
-        android:layout_marginTop="20dp"
-        android:background="@drawable/button_background"
-        android:text="Create List"
-        android:textColor="#fff"
-        android:textSize="18sp" />
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="0dp"/>
 
-    <!-- My list button -->
-    <Button
-        android:id="@+id/my_list_button"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:layout_below="@id/welcome_text_view"
-        android:layout_alignParentEnd="true"
-        android:layout_marginTop="20dp"
-        android:layout_marginRight="40dp"
-        android:background="@drawable/button_background"
-        android:text="My List"
-        android:textColor="#fff"
-        android:textSize="18sp" />
-
-    <!-- Latest deals button -->
-    <Button
-        android:id="@+id/latest_deals_button"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:background="@drawable/button_background"
-        android:text="Latest Deals"
-        android:textColor="#fff"
-        android:textSize="18sp"
-        android:layout_below="@id/create_list_button"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="20dp"
-        android:layout_marginLeft="40dp" />
-
-    <!-- Top store button -->
-    <Button
-        android:id="@+id/top_store_button"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:background="@drawable/button_background"
-        android:text="Top Store"
-        android:textColor="#fff"
-        android:textSize="18sp"
-        android:layout_below="@id/my_list_button"
-        android:layout_alignParentEnd="true"
-        android:layout_marginTop="20dp"
-        android:layout_marginRight="40dp" />
-
+    <!-- Product Views -->
     <LinearLayout
+        android:id="@+id/products_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/top_store_button"
-        android:layout_alignParentBottom="true"
-        android:layout_marginTop="47dp"
-        android:layout_marginBottom="0dp"
-        android:gravity="center"
-        android:orientation="horizontal">
-
-        <Button
-            android:id="@+id/account_button"
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="16dp"
-            android:text="Account"
-            android:textColor="#fff" />
-
-        <Button
-            android:id="@+id/logout_button"
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:text="Logout"
-            android:textColor="#fff" />
+        android:orientation="vertical"
+        android:layout_below="@id/top_products_text_view"
+        android:layout_marginTop="16dp"
+        android:gravity="center">
 
     </LinearLayout>
+
+    <!-- More Products Button -->
+    <Button
+        android:id="@+id/more_products_button"
+        android:layout_width="252dp"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/navigation_bar"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginStart="80dp"
+        android:layout_marginBottom="13dp"
+        android:layout_marginEnd="80dp"
+        android:text="More Products"
+        android:textColor="#fff"
+        android:textSize="16sp" />
+
+    <!-- Bottom navigation bar -->
+    <include
+        android:id="@+id/navigation_bar"
+        layout="@layout/nav_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true" />
 
 </RelativeLayout>

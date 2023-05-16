@@ -1,20 +1,19 @@
 package com.example.aussiegroceryapp;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -35,9 +34,10 @@ import java.util.Map;
 public class CreatedListActivity extends AppCompatActivity {
 
     private EditText listNameEditText;
-    private Spinner productSpinner;
+    private AutoCompleteTextView productSearchBar;
     private ListView selectedProductsListView;
-    private ArrayAdapter<Product> selectedProductsList;
+    private ArrayAdapter<Product> selectedProductsAdapter;
+    private LinearLayout homeLayout;
 
     // Firestore instance variable
     private FirebaseFirestore firestore;
@@ -60,7 +60,7 @@ public class CreatedListActivity extends AppCompatActivity {
     }
 
     private Map<String, Integer> selectedProductsMap;
-    private ArrayAdapter<Product> selectedProductsAdapter;
+    private ArrayAdapter<Product> selectedProductsList;
     private double totalPrice = 0;
 
     // Update total price
@@ -76,6 +76,7 @@ public class CreatedListActivity extends AppCompatActivity {
         TextView totalPriceTextView = findViewById(R.id.total_text_view);
         totalPriceTextView.setText(String.format("Total Price: $%.2f", totalPrice));
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -88,16 +89,17 @@ public class CreatedListActivity extends AppCompatActivity {
 
         // UI Elements
         listNameEditText = findViewById(R.id.list_name_edit_text);
-        productSpinner = findViewById(R.id.product_spinner);
         selectedProductsListView = findViewById(R.id.selected_products_listview);
         selectedProductsMap = new HashMap<>();
         selectedProductsAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, new ArrayList<Product>());
         selectedProductsListView.setAdapter(selectedProductsAdapter);
+        homeLayout = findViewById(R.id.home_layout);
 
-        // Spinner
+        // AutoCompleteTextView
         final ArrayAdapter<String> productAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, new ArrayList<String>());
         productAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        productSpinner.setAdapter(productAdapter);
+        productSearchBar = findViewById(R.id.product_search_edit_text);
+        productSearchBar.setAdapter(productAdapter);
 
         //Firestore initialization
         firestore = FirebaseFirestore.getInstance();
@@ -105,11 +107,12 @@ public class CreatedListActivity extends AppCompatActivity {
         FirebaseUser currentUser = auth.getCurrentUser();
         String userEmail = currentUser.getEmail();
 
-        // Firebase listener to populate spinner
+        // Firebase listener to populate AutoCompleteTextView
         FirebaseFirestore.getInstance().collection("products").get()
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
                     public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        List<String> productList = new ArrayList<>();
                         for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
                             String productName = documentSnapshot.getString("name");
                             Double productPrice = documentSnapshot.getDouble("price");
@@ -118,8 +121,9 @@ public class CreatedListActivity extends AppCompatActivity {
                                 productQty = documentSnapshot.getLong("quantity").intValue();
                             }
                             String productText = productName + " - $" + productPrice;
-                            productAdapter.add(productText);
+                            productList.add(productText);
                         }
+                        productAdapter.addAll(productList);
                         productAdapter.notifyDataSetChanged();
                     }
                 })
@@ -130,29 +134,47 @@ public class CreatedListActivity extends AppCompatActivity {
                     }
                 });
 
-        //Button to add selected product to the list
+        // Button to add selected product to the list
         Button addButton = findViewById(R.id.add_product_button);
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String selectedProductText = productSpinner.getSelectedItem().toString();
+                String selectedProductText = productSearchBar.getText().toString();
                 int selectedProductQty = 1;
 
                 // Check if the product is already in the list
                 if (selectedProductsMap.containsKey(selectedProductText)) {
                     selectedProductQty = selectedProductsMap.get(selectedProductText) + 1;
                 }
-                selectedProductsMap.put(selectedProductText, selectedProductQty);
-                selectedProductsAdapter.clear();
-                for (Map.Entry<String, Integer> entry : selectedProductsMap.entrySet()) {
-                    String productText = entry.getKey();
-                    int productQty = entry.getValue();
-                    selectedProductsAdapter.add(new Product(productText, productQty, 0.0));
+
+                // Check if the selected product is empty or not in the database
+                if (selectedProductText.isEmpty() || !isProductInDatabase(selectedProductText)) {
+                    Toast.makeText(CreatedListActivity.this, "Invalid product", Toast.LENGTH_SHORT).show();
+                } else {
+                    selectedProductsMap.put(selectedProductText, selectedProductQty);
+                    selectedProductsAdapter.clear();
+                    for (Map.Entry<String, Integer> entry : selectedProductsMap.entrySet()) {
+                        String productText = entry.getKey();
+                        int productQty = entry.getValue();
+                        selectedProductsAdapter.add(new Product(productText, productQty, 0.0));
+                    }
+
+                    selectedProductsAdapter.notifyDataSetChanged();
+
+                    updateTotalPrice();
+                    // Clear the search bar after adding the product
+                    productSearchBar.setText("");
                 }
+            }
 
-                selectedProductsAdapter.notifyDataSetChanged();
-
-                updateTotalPrice();
+            // Check if the selected product is in the database
+            private boolean isProductInDatabase(String product) {
+                for (int i = 0; i < productAdapter.getCount(); i++) {
+                    if (product.equalsIgnoreCase(productAdapter.getItem(i))) {
+                        return true;
+                    }
+                }
+                return false;
             }
 
             // Update total price
@@ -162,8 +184,11 @@ public class CreatedListActivity extends AppCompatActivity {
                     String productText = entry.getKey();
                     int productQty = entry.getValue();
                     String[] selectedProductSplit = productText.split(" - \\$");
-                    double productPrice = Double.parseDouble(selectedProductSplit[1].trim());
-                    totalPrice += productPrice * productQty;
+
+                    if (selectedProductSplit.length >= 2) {
+                        double productPrice = Double.parseDouble(selectedProductSplit[1].trim());
+                        totalPrice += productPrice * productQty;
+                    }
                 }
                 TextView totalPriceTextView = findViewById(R.id.total_text_view);
                 totalPriceTextView.setText(String.format("Total Price: $%.2f", totalPrice));
@@ -205,14 +230,12 @@ public class CreatedListActivity extends AppCompatActivity {
             }
         });
 
-        //Button to return to the Home Screen
-        Button homeButton = findViewById(R.id.home_button);
-        homeButton.setOnClickListener(new View.OnClickListener() {
+        //Return Home
+        homeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(CreatedListActivity.this, HomeActivity.class);
                 startActivity(intent);
-                finish();
             }
         });
 

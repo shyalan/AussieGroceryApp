@@ -27,36 +27,51 @@
         android:textStyle="bold"/>
 
     <!-- Button -->
-    <Button
-        android:id="@+id/add_products_button"
-        android:layout_width="391dp"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:id="@+id/header_button"
         android:layout_below="@+id/title_text_view"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
-        android:background="@drawable/button_background"
-        android:text="Add Products"
-        android:layout_centerHorizontal="true"
-        android:textColor="#fff"
-        android:textSize="18sp"
-        android:textStyle="bold" />
+        android:layout_marginTop="50dp">
 
-    <Button
-        android:id="@+id/stores_button"
-        android:layout_width="391dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/add_products_button"
-        android:layout_marginTop="20dp"
-        android:background="@drawable/button_background"
-        android:text="Add Stores"
-        android:layout_centerHorizontal="true"
-        android:textColor="#fff"
-        android:textSize="18sp"
-        android:textStyle="bold" />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp">
+
+            <Button
+                android:id="@+id/add_products_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/button_background"
+                android:text="Add Products"
+                android:textColor="#fff"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/stores_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:background="@drawable/button_background"
+                android:text="Add Stores"
+                android:textColor="#fff"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
 
     <Button
         android:id="@+id/top_product_button"
         android:layout_width="391dp"
-        android:layout_below="@+id/stores_button"
+        android:layout_below="@+id/header_button"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:background="@drawable/button_background"
@@ -80,10 +95,23 @@
         android:textStyle="bold" />
 
     <Button
-        android:id="@+id/user_button"
+        android:id="@+id/inventory_button"
         android:layout_width="391dp"
         android:layout_height="wrap_content"
         android:layout_below="@+id/all_users_button"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/button_background"
+        android:text="Inventory"
+        android:layout_centerHorizontal="true"
+        android:textColor="#fff"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+    <Button
+        android:id="@+id/user_button"
+        android:layout_width="391dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/inventory_button"
         android:layout_marginTop="20dp"
         android:background="@drawable/button_background"
         android:text="Main Dashboard"

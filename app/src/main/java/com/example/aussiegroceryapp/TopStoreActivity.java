@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -29,9 +30,10 @@ import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider;
 import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
 
 public class TopStoreActivity extends AppCompatActivity {
-    private Button backButton;
-    private Button listButton;
+
     private MapView mapView;
+    private LinearLayout homeLayout;
+    private LinearLayout listLayout;
 
     private static final int REQUEST_LOCATION_PERMISSIONS = 1001;
     private static final double MAX_ZOOM_OUT = 5.0;
@@ -41,23 +43,22 @@ public class TopStoreActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_topstore);
 
-        backButton = findViewById(R.id.back_button);
-        listButton = findViewById(R.id.list_view_button);
         mapView = (MapView) findViewById(R.id.map_view);
+        homeLayout = findViewById(R.id.home_layout);
+        listLayout = findViewById(R.id.list_layout);
 
         // Initialize Firebase Crashlytics
         FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(true);
 
-        // Set click listener for back button
-        backButton.setOnClickListener(new View.OnClickListener() {
+        homeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onBackPressed();
+                Intent intent = new Intent(TopStoreActivity.this, HomeActivity.class);
+                startActivity(intent);
             }
         });
 
-        // Set click listener for list button
-        listButton.setOnClickListener(new View.OnClickListener() {
+        listLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(TopStoreActivity.this, TopStoreListViewActivity.class);

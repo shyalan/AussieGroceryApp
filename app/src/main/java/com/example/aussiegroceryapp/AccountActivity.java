@@ -28,6 +28,7 @@ import com.google.firebase.database.ValueEventListener;
 
 public class AccountActivity extends AppCompatActivity {
     private String newEmail;
+    private Button logoutButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +39,7 @@ public class AccountActivity extends AppCompatActivity {
         Button passwordButton = findViewById(R.id.password);
         Button deleteButton = findViewById(R.id.delete);
         Button backButton = findViewById(R.id.back_button);
+        logoutButton = findViewById(R.id.logout_button);
 
         // Initialize Firebase Crashlytics
         FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(true);
@@ -206,6 +208,20 @@ public class AccountActivity extends AppCompatActivity {
                 });
                 builder.setNegativeButton("Cancel", null);
                 builder.show();
+            }
+        });
+
+        logoutButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Sign out user
+                FirebaseAuth.getInstance().signOut();
+
+                // Return to screen2 activity
+                Intent intent = new Intent(AccountActivity.this, Screen2Activity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // clear all activities on top of main activity
+                startActivity(intent);
+                finish(); // close current activity
             }
         });
 

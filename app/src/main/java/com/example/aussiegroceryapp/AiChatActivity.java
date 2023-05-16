@@ -9,15 +9,21 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
+import android.widget.LinearLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 public class AiChatActivity extends AppCompatActivity {
 
+    private LinearLayout homeLayout;
+    private LinearLayout createListLayout;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ai_chat);
+        createListLayout = findViewById(R.id.create_list_layout);
+        homeLayout = findViewById(R.id.home_layout);
 
         WebView chatWebView = findViewById(R.id.chat_web_view);
         WebSettings webSettings = chatWebView.getSettings();
@@ -35,9 +41,8 @@ public class AiChatActivity extends AppCompatActivity {
         });
         chatWebView.loadUrl("https://mediafiles.botpress.cloud/8107aa6f-91c3-4f42-8c7e-afd425975484/webchat/bot.html");
 
-        //Button to Home
-        Button homeButton = findViewById(R.id.home_button);
-        homeButton.setOnClickListener(new View.OnClickListener() {
+
+        homeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(AiChatActivity.this, HomeActivity.class);
@@ -46,9 +51,8 @@ public class AiChatActivity extends AppCompatActivity {
             }
         });
 
-        //Button to CreatedList Activity
-        Button createButton = findViewById(R.id.create_button);
-        createButton.setOnClickListener(new View.OnClickListener() {
+
+        createListLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(AiChatActivity.this, CreatedListActivity.class);

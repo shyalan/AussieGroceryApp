@@ -6,8 +6,10 @@ import android.os.Bundle;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.StyleSpan;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -26,10 +28,11 @@ import java.util.List;
 import java.util.Map;
 
 public class MyListActivity extends AppCompatActivity {
-
     private ListView createdListView;
     private ArrayAdapter<SpannableStringBuilder> createdListAdapter;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private LinearLayout homeLayout;
+    private LinearLayout createListLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,22 +42,10 @@ public class MyListActivity extends AppCompatActivity {
         // Initialize Firebase Crashlytics
         FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(true);
 
-        // Initialize the createdListView object
+        // UI
         createdListView = findViewById(R.id.created_list_view);
-
-        //Button to return to the Home Screen
-        Button homeButton = findViewById(R.id.home_button);
-        homeButton.setOnClickListener(v -> {
-            Intent intent = new Intent(MyListActivity.this, HomeActivity.class);
-            startActivity(intent);
-        });
-
-        //Button to create list
-        Button createListButton = findViewById(R.id.create_list_button);
-        createListButton.setOnClickListener(v -> {
-            Intent intent = new Intent(MyListActivity.this, CreatedListActivity.class);
-            startActivity(intent);
-        });
+        createListLayout = findViewById(R.id.create_list_layout);
+        homeLayout = findViewById(R.id.home_layout);
 
         // Create a reference to the "lists" collection in Firestore
         CollectionReference listsRef = db.collection("lists");
@@ -64,6 +55,17 @@ public class MyListActivity extends AppCompatActivity {
 
         // Create a query to get all the lists with the logged-in user's email address
         Query query = listsRef.whereEqualTo("email", userEmail);
+
+        // Nav Bar Section
+        homeLayout.setOnClickListener(v -> {
+            Intent intent = new Intent(MyListActivity.this, HomeActivity.class);
+            startActivity(intent);
+        });
+
+        createListLayout.setOnClickListener(v -> {
+            Intent intent = new Intent(MyListActivity.this, CreatedListActivity.class);
+            startActivity(intent);
+        });
 
         // Execute the query
         query.get().addOnCompleteListener(task -> {
@@ -83,7 +85,7 @@ public class MyListActivity extends AppCompatActivity {
                 }
 
                 // If Clicked on
-                createdListAdapter = new ArrayAdapter<>(MyListActivity.this, android.R.layout.simple_list_item_1, listData);
+                createdListAdapter = new ArrayAdapter<>(MyListActivity.this, R.layout.list_item, R.id.list_name_text_view, listData);
                 createdListView.setAdapter(createdListAdapter);
 
                 // Set the click listener on the ListView
@@ -97,13 +99,10 @@ public class MyListActivity extends AppCompatActivity {
                     intent.putExtra("email", userEmail);
                     startActivity(intent);
                 });
-            }
-
-            else {
+            } else {
                 // Display an error message if the query fails
                 Toast.makeText(MyListActivity.this, "Error getting lists: " + task.getException().getMessage(), Toast.LENGTH_LONG).show();
             }
         });
     }
 }
-

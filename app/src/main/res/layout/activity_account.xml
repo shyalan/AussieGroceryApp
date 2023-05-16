@@ -67,6 +67,19 @@
         android:textStyle="bold" />
 
     <Button
+        android:id="@+id/logout_button"
+        android:layout_width="391dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/delete"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/button_background"
+        android:text="Logout"
+        android:layout_centerHorizontal="true"
+        android:textColor="#fff"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+    <Button
         android:id="@+id/back_button"
         android:layout_width="191dp"
         android:layout_height="wrap_content"

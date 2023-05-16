@@ -33,10 +33,12 @@ public class AdminTopProductActivity extends AppCompatActivity {
     public static class TopProductItem {
         private final String name;
         private final Double price;
+        private final String imageUrl;
 
-        public TopProductItem(String name, Double price) {
+        public TopProductItem(String name, Double price, String imageUrl) {
             this.name = name;
             this.price = price;
+            this.imageUrl = imageUrl;
         }
 
         public String getName() {
@@ -45,6 +47,10 @@ public class AdminTopProductActivity extends AppCompatActivity {
 
         public Double getPrice() {
             return price;
+        }
+
+        public String getImageUrl() {
+            return imageUrl;
         }
     }
 
@@ -91,7 +97,7 @@ public class AdminTopProductActivity extends AppCompatActivity {
                     }
                 });
 
-        // Finish Button
+        //Finish Button
         finishButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -103,9 +109,10 @@ public class AdminTopProductActivity extends AppCompatActivity {
                             if (!queryDocumentSnapshots.isEmpty()) {
                                 DocumentSnapshot documentSnapshot = queryDocumentSnapshots.getDocuments().get(0);
                                 Double price = documentSnapshot.getDouble("price");
+                                String imageUrl = documentSnapshot.getString("imageUrl");
 
                                 // Add to top product collection
-                                TopProductItem topProductItem = new TopProductItem(selectedProductName, price);
+                                TopProductItem topProductItem = new TopProductItem(selectedProductName, price, imageUrl);
                                 db.collection("top_products")
                                         .add(topProductItem)
                                         .addOnSuccessListener(documentReference -> {
