@@ -31,12 +31,13 @@
     <WebView
         android:id="@+id/chat_web_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/welcome_text_view"
+        android:layout_height="541dp"
         android:layout_above="@id/navigation_bar"
-        android:layout_marginTop="10dp"
-        android:background="@drawable/listview_background"
+        android:layout_below="@id/welcome_text_view"
+        android:layout_marginTop="0dp"
+        android:layout_marginBottom="-33dp"
         android:layout_weight="1"
+        android:background="@drawable/listview_background"
         android:scrollbars="none" />
 
     <include

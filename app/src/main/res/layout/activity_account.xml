@@ -11,7 +11,7 @@
         android:layout_height="197dp"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="0dp"
-        android:src="@drawable/logo" />
+        android:src="@drawable/logo_home" />
 
     <!-- Title text -->
     <TextView
@@ -30,21 +30,21 @@
     <Button
         android:id="@+id/email_button"
         android:layout_width="391dp"
-        android:layout_below="@+id/title_text_view"
         android:layout_height="wrap_content"
+        android:layout_below="@id/title_text_view"
         android:layout_marginTop="50dp"
         android:background="@drawable/button_background"
-        android:text="Change you Email"
+        android:text="Change your Email"
         android:layout_centerHorizontal="true"
         android:textColor="#fff"
         android:textSize="18sp"
         android:textStyle="bold" />
 
     <Button
-        android:id="@+id/password"
+        android:id="@+id/password_button"
         android:layout_width="391dp"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/email_button"
+        android:layout_below="@id/email_button"
         android:layout_marginTop="20dp"
         android:background="@drawable/button_background"
         android:text="Reset Password"
@@ -54,13 +54,13 @@
         android:textStyle="bold" />
 
     <Button
-        android:id="@+id/delete"
+        android:id="@+id/delete_button"
         android:layout_width="391dp"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/password"
+        android:layout_below="@id/password_button"
         android:layout_marginTop="20dp"
         android:background="@drawable/button_background"
-        android:text="delete your account"
+        android:text="Delete your Account"
         android:layout_centerHorizontal="true"
         android:textColor="#fff"
         android:textSize="18sp"
@@ -70,7 +70,7 @@
         android:id="@+id/logout_button"
         android:layout_width="391dp"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/delete"
+        android:layout_below="@id/delete_button"
         android:layout_marginTop="20dp"
         android:background="@drawable/button_background"
         android:text="Logout"
@@ -79,17 +79,11 @@
         android:textSize="18sp"
         android:textStyle="bold" />
 
-    <Button
-        android:id="@+id/back_button"
-        android:layout_width="191dp"
+    <include
+        android:id="@+id/navigation_bar"
+        layout="@layout/nav_bar_1"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="20dp"
-        android:background="@drawable/button_background"
-        android:text="go back"
-        android:textColor="#fff"
-        android:textSize="18sp"
-        android:textStyle="bold" />
+        android:layout_alignParentBottom="true" />
 
 </RelativeLayout>

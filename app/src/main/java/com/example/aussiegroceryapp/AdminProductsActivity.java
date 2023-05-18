@@ -307,33 +307,7 @@ public class AdminProductsActivity extends AppCompatActivity {
                                     Toast.makeText(AdminProductsActivity.this, "Error uploading image: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                                 }
                             });
-                } else {
-                    // Create a new document in the "products" collection without an image
-                    Product product = new Product(ename, Double.parseDouble(priceString), mProductSpinner.getSelectedItem().toString());
-                    db.collection("products")
-                            .add(product)
-                            .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                                @Override
-                                public void onSuccess(DocumentReference documentReference) {
-                                    // Enable the button
-                                    mFinishButton.setEnabled(true);
-
-                                    // Show a success message
-                                    Toast.makeText(AdminProductsActivity.this, "Product added successfully", Toast.LENGTH_SHORT).show();
-                                }
-                            })
-                            .addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    // Enable the button
-                                    mFinishButton.setEnabled(true);
-
-                                    // Show an error message
-                                    Toast.makeText(AdminProductsActivity.this, "Error adding product: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                                }
-                            });
                 }
-
             }
         });
 

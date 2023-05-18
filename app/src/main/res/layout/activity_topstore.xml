@@ -33,7 +33,7 @@
         android:layout_height="528dp"
         android:layout_above="@id/navigation_bar"
         android:layout_below="@id/welcome_text_view"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="0dp"
         android:layout_marginBottom="-27dp"
         android:clickable="true"
         android:enabled="true" />

@@ -11,6 +11,7 @@ import android.text.InputType;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -28,7 +29,7 @@ import com.google.firebase.database.ValueEventListener;
 
 public class AccountActivity extends AppCompatActivity {
     private String newEmail;
-    private Button logoutButton;
+    private LinearLayout homeLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,10 +37,10 @@ public class AccountActivity extends AppCompatActivity {
         setContentView(R.layout.activity_account);
 
         Button emailButton = findViewById(R.id.email_button);
-        Button passwordButton = findViewById(R.id.password);
-        Button deleteButton = findViewById(R.id.delete);
-        Button backButton = findViewById(R.id.back_button);
-        logoutButton = findViewById(R.id.logout_button);
+        Button passwordButton = findViewById(R.id.password_button);
+        Button deleteButton = findViewById(R.id.delete_button);
+        Button logoutButton = findViewById(R.id.logout_button);
+        homeLayout = findViewById(R.id.home_layout);
 
         // Initialize Firebase Crashlytics
         FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(true);
@@ -59,8 +60,7 @@ public class AccountActivity extends AppCompatActivity {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             newEmail = input.getText().toString();
-                            // Handle the new email address
-                            // Update the email in Firebase Authentication
+                            // Handle the new email address | Update the email in Firebase Authentication
                             user.updateEmail(newEmail)
                                     .addOnCompleteListener(new OnCompleteListener<Void>() {
                                         @Override
@@ -100,35 +100,6 @@ public class AccountActivity extends AppCompatActivity {
                                                                 } else {
                                                                     // Email update failed, show error message
                                                                     Toast.makeText(AccountActivity.this, "Try a different email", Toast.LENGTH_SHORT).show();
-                                                                }
-                                                            }
-                                                        });
-                                            } else {
-                                                // Email update failed, show error message
-                                                Toast.makeText(AccountActivity.this, "Email update failed", Toast.LENGTH_SHORT).show();
-                                            }
-                                        }
-                                    });
-                            user.updateEmail(newEmail)
-                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<Void> task) {
-                                            if (task.isSuccessful()) {
-                                                // Email update successful, send verification email
-                                                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                                                user.sendEmailVerification()
-                                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                            @Override
-                                                            public void onComplete(@NonNull Task<Void> task) {
-                                                                if (task.isSuccessful()) {
-                                                                    // Email verification email sent, show success message
-                                                                    Toast.makeText(AccountActivity.this, "Email updated successfully. Verification email sent to " + newEmail, Toast.LENGTH_SHORT).show();
-                                                                    // Start HomeActivity
-                                                                    Intent intent = new Intent(AccountActivity.this, HomeActivity.class);
-                                                                    startActivity(intent);
-                                                                } else {
-                                                                    // Email verification email failed to send, show error message
-                                                                    Toast.makeText(AccountActivity.this, "Email updated successfully, but failed to send verification email", Toast.LENGTH_SHORT).show();
                                                                 }
                                                             }
                                                         });
@@ -217,15 +188,15 @@ public class AccountActivity extends AppCompatActivity {
                 // Sign out user
                 FirebaseAuth.getInstance().signOut();
 
-                // Return to screen2 activity
+                // Return to Screen2Activity
                 Intent intent = new Intent(AccountActivity.this, Screen2Activity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // clear all activities on top of main activity
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // clear all activities on top of the main activity
                 startActivity(intent);
                 finish(); // close current activity
             }
         });
 
-        backButton.setOnClickListener(new View.OnClickListener() {
+        homeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onBackPressed();

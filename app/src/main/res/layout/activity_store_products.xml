@@ -1,5 +1,5 @@
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background_gradient">
@@ -7,15 +7,15 @@
     <!-- App logo -->
     <ImageView
         android:id="@+id/logo_image_view"
-        android:layout_width="181dp"
-        android:layout_height="197dp"
+        android:layout_width="138dp"
+        android:layout_height="118dp"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="0dp"
-        android:src="@drawable/logo" />
+        android:src="@drawable/logo_home" />
 
-    <!-- Title text -->
+    <!-- Welcome text -->
     <TextView
-        android:id="@+id/title_text_view"
+        android:id="@+id/welcome_text_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Store Name"
@@ -24,50 +24,27 @@
         android:layout_below="@id/logo_image_view"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="0dp"
-        android:textStyle="bold" />
+        android:textStyle="bold"/>
 
-    <!-- List View -->
-    <ListView
-        android:id="@+id/list_view"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="399dp"
-        android:layout_below="@id/title_text_view"
-        android:layout_marginTop="10dp"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/navigation_bar"
+        android:layout_below="@id/welcome_text_view"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
+        android:paddingLeft="17dp"
         android:background="@drawable/listview_background"
-        android:divider="#000"
-        android:dividerHeight="1dp"
-        android:longClickable="true" />
+        android:clipToPadding="false" />
 
-    <!-- Buttons -->
-    <LinearLayout
-        android:id="@+id/buttons_layout"
+    <include
+        android:id="@+id/navigation_bar"
+        layout="@layout/nav_bar_6"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="20dp"
-        android:gravity="center_horizontal">
-
-        <Button
-            android:id="@+id/back_button"
-            android:layout_width="191dp"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="10dp"
-            android:background="@drawable/button_background"
-            android:text="go back"
-            android:textColor="#fff"
-            android:textSize="18sp"
-            android:textStyle="bold" />
-
-        <Button
-            android:id="@+id/home_button"
-            android:layout_width="200dp"
-            android:layout_height="wrap_content"
-            android:background="@drawable/button_background"
-            android:text="Home"
-            android:textColor="#fff"
-            android:textSize="18sp"
-            android:textStyle="bold" />
-
-    </LinearLayout>
+        android:layout_alignParentBottom="true" />
 
 </RelativeLayout>

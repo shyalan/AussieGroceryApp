@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -36,12 +37,15 @@ import java.util.Map;
 public class ListDetailsActivity extends AppCompatActivity {
 
     private LinearLayout homeLayout;
+    private Button deleteButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_details);
         homeLayout = findViewById(R.id.home_layout);
+        deleteButton = findViewById(R.id.delete_button);
+
 
         // Get the listName and email extras from the intent
         String listName = getIntent().getStringExtra("listName");
@@ -208,6 +212,62 @@ public class ListDetailsActivity extends AppCompatActivity {
                         }
                     }
                 });
+        deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(ListDetailsActivity.this);
+                builder.setMessage("Are you sure you want to delete this list?")
+                        .setCancelable(false)
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                // Delete the list from the Firestore database
+                                db.collection("lists")
+                                        .whereEqualTo("email", email)
+                                        .whereEqualTo("listName", listName)
+                                        .get()
+                                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                if (task.isSuccessful()) {
+                                                    for (QueryDocumentSnapshot document : task.getResult()) {
+                                                        String documentId = document.getId();
+                                                        db.collection("lists").document(documentId)
+                                                                .delete()
+                                                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                                    @Override
+                                                                    public void onSuccess(Void aVoid) {
+                                                                        Toast.makeText(ListDetailsActivity.this, "List deleted successfully", Toast.LENGTH_SHORT).show();
+
+                                                                        // Navigate to MyListActivity
+                                                                        Intent intent = new Intent(ListDetailsActivity.this, MyListActivity.class);
+                                                                        startActivity(intent);
+                                                                        finish();
+                                                                    }
+                                                                })
+                                                                .addOnFailureListener(new OnFailureListener() {
+                                                                    @Override
+                                                                    public void onFailure(@NonNull Exception e) {
+                                                                        Toast.makeText(ListDetailsActivity.this, "Error deleting list", Toast.LENGTH_SHORT).show();
+                                                                    }
+                                                                });
+                                                    }
+                                                } else {
+                                                    Toast.makeText(ListDetailsActivity.this, "Error deleting list", Toast.LENGTH_SHORT).show();
+                                                }
+                                            }
+                                        });
+                            }
+                        })
+                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                // User cancelled the dialog
+                                dialog.cancel();
+                            }
+                        });
+                AlertDialog alert = builder.create();
+                alert.show();
+            }
+        });
     }
 
     private void updateProductImage(String productName, String imageUrl) {

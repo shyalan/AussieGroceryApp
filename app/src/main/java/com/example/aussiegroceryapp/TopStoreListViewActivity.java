@@ -5,12 +5,14 @@ import static android.content.ContentValues.TAG;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -29,7 +31,7 @@ public class TopStoreListViewActivity extends AppCompatActivity {
 
     private ListView listView;
     private ArrayList<String> storeList;
-    private ArrayAdapter<String> adapter;
+    private CustomAdapter adapter;
     private LinearLayout homeLayout;
     private LinearLayout mapLayout;
 
@@ -68,9 +70,8 @@ public class TopStoreListViewActivity extends AppCompatActivity {
                     }
                 });
 
-
         // Set up the adapter and connect it to the list view
-        adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, storeList);
+        adapter = new CustomAdapter(storeList);
         listView.setAdapter(adapter);
 
         // Set up a click listener for the list view items
@@ -100,5 +101,27 @@ public class TopStoreListViewActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
+
+    private class CustomAdapter extends ArrayAdapter<String> {
+
+        public CustomAdapter(ArrayList<String> data) {
+            super(TopStoreListViewActivity.this, R.layout.list_item, data);
+        }
+
+        @NonNull
+        @Override
+        public View getView(int position, View convertView, @NonNull ViewGroup parent) {
+            View view = convertView;
+            if (view == null) {
+                LayoutInflater inflater = getLayoutInflater();
+                view = inflater.inflate(R.layout.list_item, parent, false);
+            }
+
+            TextView storeNameTextView = view.findViewById(R.id.list_name_text_view);
+            storeNameTextView.setText(storeList.get(position));
+
+            return view;
+        }
     }
 }
